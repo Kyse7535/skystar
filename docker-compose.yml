@@ -8,9 +8,10 @@ services:
       - "3306"
     ports:
       - "3306:3306"
+    volumes:
+      - ./db/data:/var/lib/mysql
     environment:
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
-      MARIADB_DATABASE: db_projet_it_L3
       MARIADB_ROOT_HOST: "%"
   phpmyadmin:
     image: phpmyadmin
