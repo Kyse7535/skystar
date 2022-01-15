@@ -1,22 +1,52 @@
 version: "3.9"
 services:
+  api:
+    container_name: api_skystar
+    build: ./api
+    links:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api/dev:/app
+  # db:
+  #   container_name: db_skystar
+  #   build: ./db
+  #   restart: always
+  #   expose:
+  #     - "3306"
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ./db/data:/var/lib/mysql
+  #   environment:
+  #     MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+  #     MARIADB_ROOT_HOST: "%"
   db:
-    container_name: db_projet_it_L3
     build: ./db
     restart: always
-    expose:
-      - "3306"
     ports:
-      - "3306:3306"
-    volumes:
-      - ./db/data:/var/lib/mysql
+      - 5432:5432
     environment:
-      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
-      MARIADB_ROOT_HOST: "%"
-  phpmyadmin:
-    image: phpmyadmin
+      POSTGRES_DB: skystar
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pswd
+  adminer:
+    image: adminer
     restart: always
+    links:
+      - db
     ports:
-      - 8080:80
+      - 8080:8080
     environment:
-      - PMA_ARBITRARY=1
+      - ADMINER_DESIGN=pepa-linha
+  app:
+    build: ./app
+    expose:
+      - 4200
+    ports:
+      - 4200:4200
+    volumes:
+      # - /app/.angular
+      # - /app/node_modules
+      - ./app/dev:/app

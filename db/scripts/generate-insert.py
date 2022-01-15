@@ -3,11 +3,14 @@
 import json
 import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Table, ForeignKey
+from sqlalchemy import Numeric, Column, Integer, String, Table, ForeignKey
 from sqlalchemy.orm import relationship
 import datetime
 
-engine = sqlalchemy.create_engine("mariadb+mariadbconnector://root:@127.0.0.1:3306/skystar", echo=True, future=True)
+engine = sqlalchemy.create_engine("postgresql+pg8000://user:pswd@localhost/skystar",
+    execution_options={
+        "isolation_level": "REPEATABLE READ"
+    })
 
 Base = declarative_base()
 
@@ -20,52 +23,52 @@ Session.configure(bind=engine)
 session = Session()
 
 class Determiner(Base):
-    __tablename__ = "DETERMINER"
-    id_objet_proche = Column(Integer, ForeignKey('OBJET_PROCHE.id_objet_proche'), primary_key=True)
-    id_constellation = Column(Integer, ForeignKey('CONSTELLATION.id_constellation'), primary_key=True)
+    __tablename__ = "determiner"
+    id_objet_proche = Column(Integer, ForeignKey('objet_proche.id_objet_proche'), primary_key=True)
+    id_constellation = Column(Integer, ForeignKey('constellation.id_constellation'), primary_key=True)
 
 class Grouper(Base):
-    __tablename__ = "GROUPER"
-    id_objet_distant = Column(Integer, ForeignKey('OBJET_DISTANT.id_objet_distant'), primary_key=True)
-    id_constellation = Column(Integer, ForeignKey('CONSTELLATION.id_constellation'), primary_key=True)
+    __tablename__ = "grouper"
+    id_objet_distant = Column(Integer, ForeignKey('objet_distant.id_objet_distant'), primary_key=True)
+    id_constellation = Column(Integer, ForeignKey('constellation.id_constellation'), primary_key=True)
 
 class Objetdistant(Base):
-    __tablename__ = "OBJET_DISTANT"
+    __tablename__ = "objet_distant"
     id_objet_distant = Column(Integer, primary_key=True)
-    ra = Column(Integer)
-    deca = Column(Integer)
-    magnitude = Column(Integer)
-    ra_radians = Column(Integer)
-    dec_radians = Column(Integer)
+    ra = Column(Numeric)
+    deca = Column(Numeric)
+    magnitude = Column(Numeric)
+    ra_radians = Column(Numeric)
+    dec_radians = Column(Numeric)
     type = Column(String[50])
     created = Column(sqlalchemy.DateTime)
     updated = Column(sqlalchemy.DateTime)
-    constellations = relationship("Constellation", secondary='GROUPER')
+    constellations = relationship("Constellation", secondary='grouper')
 
 class Objetproche(Base):
-    __tablename__ = "OBJET_PROCHE"
+    __tablename__ = "objet_proche"
     id_objet_proche = Column(Integer, primary_key=True)
     nom = Column(String[32])
-    magnitude = Column(Integer)
-    ra = Column(Integer)
-    deca = Column(Integer)
+    magnitude = Column(Numeric)
+    ra = Column(Numeric)
+    deca = Column(Numeric)
     type = Column(String[32])
     date_approbation = Column(String[32])
-    constellations = relationship("Constellation", secondary='DETERMINER')
+    constellations = relationship("Constellation", secondary='determiner')
 
 class Constellation(Base):
-    __tablename__ = "CONSTELLATION"
+    __tablename__ = "constellation"
     id_constellation = Column(Integer, primary_key=True)
     latin_name = Column(String[50])
     observation_saison = Column(String[50])
     etoile_principale = Column(String[40])
-    ra = Column(Integer)
-    deca = Column(Integer)
-    taille = Column(Integer)
+    ra = Column(Numeric)
+    deca = Column(Numeric)
+    taille = Column(Numeric)
     created = Column(sqlalchemy.DateTime)
     updated = Column(sqlalchemy.DateTime)
-    objet_proches = relationship(Objetproche, secondary='DETERMINER', back_populates="constellations")
-    objet_distants = relationship(Objetdistant, secondary='GROUPER', back_populates="constellations")
+    objet_proches = relationship(Objetproche, secondary='determiner', back_populates="constellations")
+    objet_distants = relationship(Objetdistant, secondary='grouper', back_populates="constellations")
 
 def filter_objetdistants(iau_code):
     oas = []
