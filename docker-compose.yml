@@ -8,6 +8,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - /app/var
+      - /app/vendor
       - ./api/dev:/app
   # db:
   #   container_name: db_skystar
@@ -47,6 +49,6 @@ services:
     ports:
       - 4200:4200
     volumes:
-      # - /app/.angular
-      # - /app/node_modules
+      - /app/.angular
+      - /app/node_modules
       - ./app/dev:/app
