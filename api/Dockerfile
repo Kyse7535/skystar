@@ -1,13 +1,14 @@
 FROM php:8-fpm-alpine3.14
 
 # installation bash
-RUN apk --no-cache update && apk --no-cache add bash git
+RUN apk --no-cache update && apk --no-cache add bash git dos2unix
 
 # copy des scripts
 COPY ./scripts /scripts
 
 # installation de composer CORRECTEMENT
 RUN chmod +x /scripts/ -R \
+&& dos2unix /scripts/composer-install.sh \
 && /scripts/composer-install.sh \
 && mv composer.phar /usr/local/bin/composer
 
