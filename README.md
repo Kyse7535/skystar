@@ -1,10 +1,20 @@
 ## Démarrer le projet complet
 
+- Rajouter le fichier .env ci-suit (modifiable en fonction de vos besoins) :
+
+```
+# ports
+APP_PORT_LOCAL=4200
+API_PORT_LOCAL=8000
+DB_PORT_LOCAL=5432
+ADMINER_PORT_LOCAL=8080
+```
+
 - docker-compose up -d
 
 ### Pour accéder a la base via adminer
 
-- localhost:8080
+- localhost:{ADMINER_PORT_LOCAL}
 - système : postgresql
 - serveur : db
 - user : user
@@ -25,13 +35,13 @@ _vous devez avoir pip d'installer sur votre machine, je n'es pas encore de Docke
 
 Accéder au projet Symfony :
 
-- localhost:8000
+- localhost:{API_PORT_LOCAL}
 
 ### Pour démarrer le projet angular
 
 Accéder au projet Angular :
 
-- localhost:4200
+- localhost:{APP_PORT_LOCAL}
 
 Si vous avez besoin d'installer un package (comme material-ui par exemple)
 
