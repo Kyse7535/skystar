@@ -7,6 +7,7 @@ import { AstroguessrComponent } from './astroguessr/astroguessr.component';
 import { CarteComponent } from './carte/carte.component';
 import { HomeComponent } from './home/home.component';
 import { ResearchComponent } from './research/research.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -14,11 +15,12 @@ import { ResearchComponent } from './research/research.component';
     HomeComponent,
     ResearchComponent,
     CarteComponent,
-    AstroguessrComponent
+    AstroguessrComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
