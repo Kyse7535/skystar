@@ -8,30 +8,7 @@
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
-
-$main-palette: (
-    // 50 ... 900
-    500: #3D3B37,
-    contrast: (
-        // 50 ... 900
-        500: white,
-    )
-);
-
-$secondary-palette: (
-    // 50 ... 900
-    500: #915000,
-    contrast: (
-        // 50 ... 900
-        500: white,
-    )
-);
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$my-primary: mat.define-palette($main-palette, 500);
-$my-accent: mat.define-palette($secondary-palette, 500);
+@import "./theme.scss";
 
 // The warn palette is optional (defaults to red).
 // DEFAULT
@@ -42,7 +19,7 @@ $app-warn: mat.define-palette(mat.$red-palette);
 $app-theme: mat.define-light-theme((
   color: (
     primary: $my-primary,
-   accent: $my-accent,
+    accent: $my-accent,
     warn: $app-warn,
   )
 ));

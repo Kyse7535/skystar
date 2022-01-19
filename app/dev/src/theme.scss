@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+
+$main-palette: (
+    // 50 ... 900
+    500: #3D3B37,
+    contrast: (
+        // 50 ... 900
+        500: white,
+    )
+);
+
+$secondary-palette: (
+    // 50 ... 900
+    500: #915000,
+    contrast: (
+        // 50 ... 900
+        500: white,
+    )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$my-primary: mat.define-palette($main-palette, 500);
+$my-accent: mat.define-palette($secondary-palette, 500);
