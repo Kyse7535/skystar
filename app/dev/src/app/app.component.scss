@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+@import "../theme.scss";
+
+.navbar {
+    border-bottom: 1px solid black;
+}
+
+.navbar > a {
+    padding: 12px 25px;
+    border-radius: 0;
+    transition: 0.25s ease;
+    min-width: 125px;
+}
+
+.navbar > a:hover, .navbar > .active {
+    background-color: mat.get-color-from-palette($my-accent, 500);
+}
