@@ -1,21 +1,73 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 $main-palette: (
+  // 50 ... 900
+  50: #3d3b37,
+  100: #3d3b37,
+  200: #3d3b37,
+  300: #3d3b37,
+  400: #3d3b37,
+  500: #3d3b37,
+  600: #3d3b37,
+  700: #3d3b37,
+  800: #3d3b37,
+  900: #3d3b37,
+  A100: #3d3b37,
+  A200: #3d3b37,
+  A400: #3d3b37,
+  A700: #3d3b37,
+  contrast: (
     // 50 ... 900
-    500: #3D3B37,
-    contrast: (
-        // 50 ... 900
-        500: white,
-    )
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white
+  )
 );
 
 $secondary-palette: (
+  // 50 ... 900
+  50: #915000,
+  100: #915000,
+  200: #915000,
+  300: #915000,
+  400: #915000,
+  500: #915000,
+  600: #915000,
+  700: #915000,
+  800: #915000,
+  900: #915000,
+  A100: #915000,
+  A200: #915000,
+  A400: #915000,
+  A700: #915000,
+  contrast: (
     // 50 ... 900
-    500: #915000,
-    contrast: (
-        // 50 ... 900
-        500: white,
-    )
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white
+  )
 );
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss

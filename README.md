@@ -47,3 +47,13 @@ Si vous avez besoin d'installer un package (comme material-ui par exemple)
 
 - ouvrir une commande bash dans le container app et dans le dossier /app : ng add _nom-du-package_
 - redémarrer le container Docker
+
+### Issues
+
+Si vous rencontrez un problème après un git pull :
+
+- Supprimer le container
+- Supprimer l'image
+- docker system prune
+- docker volume prune
+- docker-compose up -d
