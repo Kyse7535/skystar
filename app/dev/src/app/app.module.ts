@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { NgParticlesModule } from 'ng-particles';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NgParticlesModule } from 'ng-particles';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
-    NgParticlesModule
+    NgParticlesModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

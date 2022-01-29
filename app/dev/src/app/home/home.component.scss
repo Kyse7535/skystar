@@ -1,0 +1,36 @@
+.mat-grid-tile {
+    text-align: center;
+}
+
+.home-content-section > a {
+    font-size: large;
+    padding: 10px 25px;
+    border: 1px solid white;
+}
+
+@media screen and (min-width: 740px) {
+    .home-section {
+        display: block;
+        width: 100%;
+    }
+    
+    .home-content-section {
+        max-width: 450px;
+    }
+    
+    .home-right {
+        float: right;
+        margin-right: 100px;
+    }
+    
+    .home-left {
+        float: left;
+        margin-left: 100px;
+    }   
+}
+
+@media screen and (max-width: 740px) {
+    .home-section {
+        padding: 25px;
+    }
+}
