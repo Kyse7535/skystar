@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\ConstellationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="constellation")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ConstellationRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 #[ApiResource(
     normalizationContext: [ 'groups' => ['read:infos']]
@@ -81,15 +84,17 @@ class Constellation
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @ORM\Column(name="created", type="datetime_immutable", nullable=true)
      */
+    #[Groups(['read:infos'])]
     private $created;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @ORM\Column(name="updated", type="datetime_immutable", nullable=true)
      */
+    #[Groups(['read:infos'])]
     private $updated;
 
     /**
@@ -192,26 +197,39 @@ class Constellation
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreated(): ?\DateTimeImmutable
     {
         return $this->created;
     }
 
-    public function setCreated(?\DateTimeInterface $created): self
+    #[ORM\PreUpdate, ORM\PrePersist]
+    public function setCreated(): self
     {
-        $this->created = $created;
+        $this->created = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function getUpdated(): ?\DateTimeInterface
+    public function getUpdated(): ?\DateTimeImmutable
     {
         return $this->updated;
     }
 
-    public function setUpdated(?\DateTimeInterface $updated): self
+
+    /*public function updateTimestamps(){
+        if($this->getCreated()===null){
+            $this->created = new \DateTimeImmutable();
+        }
+        $this->updated = new \DateTimeImmutable();
+
+        return $this;
+    }
+    */
+
+    #[ORM\PreUpdate, ORM\PrePersist]
+    public function setUpdated(): self
     {
-        $this->updated = $updated;
+        $this->updated = new \DateTimeImmutable();
 
         return $this;
     }

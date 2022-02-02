@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\ObjetDistantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="objet_distant")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ObjetDistantRepository")
  */
+
 #[ApiResource(
     normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
 )]
