@@ -2,16 +2,24 @@
 
 namespace App\Entity;
 
+use App\Repository\ObjetDistantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * ObjetDistant
  *
  * @ORM\Table(name="objet_distant")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ObjetDistantRepository")
  */
+
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
+)]
 class ObjetDistant
 {
     /**
@@ -22,6 +30,8 @@ class ObjetDistant
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="objet_distant_id_objet_distant_seq", allocationSize=1, initialValue=1)
      */
+
+    #[Groups(['read:collection'])]
     private $idObjetDistant;
 
     /**
@@ -29,6 +39,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="ra", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $ra;
 
     /**
@@ -93,6 +104,7 @@ class ObjetDistant
      *   }
      * )
      */
+    #[Groups(['read:collection'])]
     private $idConstellation;
 
     /**
