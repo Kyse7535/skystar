@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Filter\ResearchObjetDistantFilter;
 
 /**
  * ObjetDistant
@@ -20,6 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
 )]
+#[ApiFilter(ResearchObjetDistantFilter::class)]
 class ObjetDistant
 {
     /**
@@ -47,6 +50,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="deca", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $deca;
 
     /**
@@ -54,6 +58,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="magnitude", type="decimal", precision=10, scale=3, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $magnitude;
 
     /**
@@ -61,6 +66,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="ra_radians", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $raRadians;
 
     /**
@@ -68,6 +74,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="dec_radians", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $decRadians;
 
     /**
@@ -75,6 +82,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="type", type="string", length=50, nullable=true, options={"fixed"=true})
      */
+    #[Groups(['read:collection'])]
     private $type;
 
     /**
@@ -82,6 +90,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $created;
 
     /**
@@ -89,6 +98,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $updated;
 
     /**
@@ -104,7 +114,6 @@ class ObjetDistant
      *   }
      * )
      */
-    #[Groups(['read:collection'])]
     private $idConstellation;
 
     /**
