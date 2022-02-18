@@ -70,8 +70,48 @@ $secondary-palette: (
   )
 );
 
+$optionnal-palette: (
+  // 50 ... 900
+  50: #346E91,
+  100: #346E91,
+  200: #346E91,
+  300: #346E91,
+  400: #346E91,
+  500: #346E91,
+  600: #346E91,
+  700: #346E91,
+  800: #346E91,
+  900: #346E91,
+  A100: #346E91,
+  A200: #346E91,
+  A400: #346E91,
+  A700: #346E91,
+  contrast: (
+    // 50 ... 900
+    50: white,
+    100: white,
+    200: white,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: white,
+    A200: white,
+    A400: white,
+    A700: white
+  )
+);
+
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $my-primary: mat.define-palette($main-palette, 500);
 $my-accent: mat.define-palette($secondary-palette, 500);
+$my-optionnal: mat.define-palette($optionnal-palette, 500);
+// The warn palette is optional (defaults to red).
+// DEFAULT
+$my-danger: mat.define-palette(mat.$red-palette);

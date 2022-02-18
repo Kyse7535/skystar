@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +14,19 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { NgParticlesModule } from 'ng-particles';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule } from "@angular/material/table";
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatIconModule} from '@angular/material/icon';
+import { AlertComponent } from './alert/alert.component';
+import { SlideComponent } from './slide/slide.component';
 
 @NgModule({
   declarations: [
@@ -20,15 +35,31 @@ import {MatGridListModule} from '@angular/material/grid-list';
     ResearchComponent,
     CarteComponent,
     AstroguessrComponent,
+    AlertComponent,
+    SlideComponent,
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
     NgParticlesModule,
-    MatGridListModule
+    MatGridListModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
+    HttpClientModule,
+    MatSortModule,
+    MatTableModule,
+    MatProgressBarModule,
+    MatIconModule
   ],
   providers: [ Title ],
   bootstrap: [AppComponent]

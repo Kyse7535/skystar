@@ -1,0 +1,15 @@
+<app-slide #slide>
+  <div [class]="'alert' + ' ' + style">
+    <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
+    <div>
+      <ng-content>
+        <!-- Children props -->
+      </ng-content>
+    </div>
+    <button mat-icon-button>
+      <mat-icon 
+        (click)="toggle()"
+      >close</mat-icon>
+    </button>
+  </div>
+</app-slide>
