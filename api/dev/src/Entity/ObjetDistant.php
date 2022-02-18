@@ -2,16 +2,27 @@
 
 namespace App\Entity;
 
+use App\Repository\ObjetDistantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Filter\ResearchObjetDistantFilter;
 
 /**
  * ObjetDistant
  *
  * @ORM\Table(name="objet_distant")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ObjetDistantRepository")
  */
+
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
+)]
+#[ApiFilter(ResearchObjetDistantFilter::class)]
 class ObjetDistant
 {
     /**
@@ -22,6 +33,8 @@ class ObjetDistant
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="objet_distant_id_objet_distant_seq", allocationSize=1, initialValue=1)
      */
+
+    #[Groups(['read:collection'])]
     private $idObjetDistant;
 
     /**
@@ -29,6 +42,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="ra", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $ra;
 
     /**
@@ -36,6 +50,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="deca", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $deca;
 
     /**
@@ -43,6 +58,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="magnitude", type="decimal", precision=10, scale=3, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $magnitude;
 
     /**
@@ -50,6 +66,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="ra_radians", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $raRadians;
 
     /**
@@ -57,6 +74,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="dec_radians", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $decRadians;
 
     /**
@@ -64,6 +82,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="type", type="string", length=50, nullable=true, options={"fixed"=true})
      */
+    #[Groups(['read:collection'])]
     private $type;
 
     /**
@@ -71,6 +90,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $created;
 
     /**
@@ -78,6 +98,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $updated;
 
     /**

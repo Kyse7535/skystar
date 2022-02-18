@@ -1,1 +1,196 @@
-<p>research works!</p>
+<!-- Formulaire de recherche -->
+<section>
+  <div class="container">
+    <div class="container-content">
+      <mat-card>
+        <mat-card-title>Veuillez renseigner vos filtres</mat-card-title>
+        <mat-card-content>
+          <form (ngSubmit)="onSubmit()">
+            <mat-grid-list cols="2" rowHeight="100">
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>Type d'objet</mat-label>
+                  <mat-select [(ngModel)]="type_objet" name="type_objet">
+                    <mat-option value="proche">
+                      Objet proche
+                    </mat-option>
+                    <mat-option value="distant">
+                      Objet distant
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <mat-divider></mat-divider>
+            <app-alert icon="info" color="info">Vous devez sélectionnez RA, DEC et Magnitude ensemble.</app-alert>
+            <!-- <app-alert icon="warning" color="danger">Vous devez sélectionnez RA, DEC et Magnitude ensemble.</app-alert> -->
+            <mat-grid-list cols="2" rowHeight="100">
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>RA</mat-label>
+                  <input [(ngModel)]="ra" name="ra" type="number" matInput />
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>DEC</mat-label>
+                  <input [(ngModel)]="dec" name="dec" type="number" matInput />
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>V Magnitude</mat-label>
+                  <input [(ngModel)]="magnitude" name="magnitude" type="number" matInput />
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <mat-divider></mat-divider>
+            <mat-grid-list cols="2" rowHeight="100">
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>Constellation</mat-label>
+                  <mat-select [(ngModel)]="constellationsSelected" name="constellations" multiple>
+                    <mat-option *ngFor="let c of constellations" [value]="c.idConstellation">
+                      {{ c.latinName }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <mat-divider></mat-divider>
+            <mat-grid-list cols="2" rowHeight="100">
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>Filtrer</mat-label>
+                  <input [(ngModel)]="filter" name="filter" type="text" matInput />
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button (click)="onSubmit()" mat-raised-button type="submit">Rechercher</button>
+        </mat-card-actions>
+        <mat-progress-bar *ngIf="isLoading" mode="query"></mat-progress-bar>
+      </mat-card>
+    </div>
+  </div>
+</section>
+<!-- Fin formulaire de recherche -->
+
+<!-- Résultats de la recherche -->
+<section>
+  <div class="container">
+    <div class="container-content">
+      <mat-card>
+        <mat-card-title>Résultats</mat-card-title>
+        <mat-card-content>
+          <div class="example-container mat-elevation-z8">
+            <div
+              class="example-loading-shade"
+              *ngIf="isLoading"
+            >
+              <mat-spinner *ngIf="isLoading"></mat-spinner>
+            </div>
+
+            <div class="example-table-container">
+              <table
+                mat-table
+                [dataSource]="data"
+                class="example-table"
+                matSort
+                matSortActive="created"
+                matSortDisableClear
+                matSortDirection="desc"
+              >
+
+                <ng-container matColumnDef="@id">
+                  <th mat-header-cell *matHeaderCellDef>ID</th>
+                  <td mat-cell *matCellDef="let row">{{ row['@id'] }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="idObjetDistant">
+                  <th mat-header-cell *matHeaderCellDef>ID</th>
+                  <td mat-cell *matCellDef="let row">{{ row.idObjetDistant }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="idObjetProche">
+                  <th mat-header-cell *matHeaderCellDef>ID</th>
+                  <td mat-cell *matCellDef="let row">{{ row.idObjetProche }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="ra">
+                  <th mat-header-cell *matHeaderCellDef>RA</th>
+                  <td mat-cell *matCellDef="let row">{{ row.ra }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="deca">
+                  <th mat-header-cell *matHeaderCellDef>Deca</th>
+                  <td mat-cell *matCellDef="let row">{{ row.deca }}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="magnitude">
+                  <th mat-header-cell *matHeaderCellDef>Magnitude</th>
+                  <td mat-cell *matCellDef="let row">{{ row.magnitude }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="nom">
+                  <th mat-header-cell *matHeaderCellDef>Nom</th>
+                  <td mat-cell *matCellDef="let row">{{ row?.nom }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                  <th mat-header-cell *matHeaderCellDef>Type</th>
+                  <td mat-cell *matCellDef="let row">{{ row.type }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="created">
+                  <th mat-header-cell *matHeaderCellDef>Date de création</th>
+                  <td mat-cell *matCellDef="let row">{{ row.created | date }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="updated">
+                  <th mat-header-cell *matHeaderCellDef>Date de modification</th>
+                  <td mat-cell *matCellDef="let row">{{ row.updated | date }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="dateApprobation">
+                  <th mat-header-cell *matHeaderCellDef>Date d'approbation</th>
+                  <td mat-cell *matCellDef="let row">{{ row.dateApprobation | date }}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="raRadians">
+                  <th mat-header-cell *matHeaderCellDef>RA Radians</th>
+                  <td mat-cell *matCellDef="let row">{{ row.raRadians }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="decRadians">
+                  <th mat-header-cell *matHeaderCellDef>DEC Radians</th>
+                  <td mat-cell *matCellDef="let row">{{ row.decRadians }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let row">rien</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+            </div>
+            
+            <mat-paginator
+              [length]="resultsLength"
+              [pageSize]="30"
+              itemsPerPageLabel="Objet(s) par page"
+              aria-label="Sélectionnez les objets du ciel profond"
+            ></mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>

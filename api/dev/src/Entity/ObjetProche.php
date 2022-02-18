@@ -5,6 +5,10 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Filter\ResearchObjetProcheFilter;
 
 /**
  * ObjetProche
@@ -12,6 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="objet_proche")
  * @ORM\Entity
  */
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
+)]
+#[ApiFilter(ResearchObjetProcheFilter::class)]
 class ObjetProche
 {
     /**
@@ -29,6 +37,7 @@ class ObjetProche
      *
      * @ORM\Column(name="nom", type="string", length=32, nullable=true, options={"fixed"=true})
      */
+    #[Groups(['read:collection'])]
     private $nom;
 
     /**
@@ -36,6 +45,7 @@ class ObjetProche
      *
      * @ORM\Column(name="magnitude", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $magnitude;
 
     /**
@@ -43,6 +53,7 @@ class ObjetProche
      *
      * @ORM\Column(name="ra", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $ra;
 
     /**
@@ -50,6 +61,7 @@ class ObjetProche
      *
      * @ORM\Column(name="deca", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $deca;
 
     /**
@@ -57,6 +69,7 @@ class ObjetProche
      *
      * @ORM\Column(name="type", type="string", length=32, nullable=true, options={"fixed"=true})
      */
+    #[Groups(['read:collection'])]
     private $type;
 
     /**
@@ -64,6 +77,7 @@ class ObjetProche
      *
      * @ORM\Column(name="date_approbation", type="string", length=32, nullable=true, options={"fixed"=true})
      */
+    #[Groups(['read:collection'])]
     private $dateApprobation;
 
     /**
