@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use App\Controller\FilterById;
 use App\Repository\ConstellationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+
+use ApiPlatform\Core\Annotation\ApiProperty;
+use App\Filter\ConstellationFilter;
 
 /**
  * Constellation
@@ -18,8 +23,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\HasLifecycleCallbacks()
  */
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['read:infos']]
+    normalizationContext: [ 'groups' => ['read:infos']],
+    itemOperations: ['get'],
+    collectionOperations: [
+        'get'
+        ],
+    paginationEnabled: false,
 )]
+#[ApiFilter(ConstellationFilter::class)]
 class Constellation
 {
     /**
@@ -31,6 +42,7 @@ class Constellation
      * @ORM\SequenceGenerator(sequenceName="constellation_id_constellation_seq", allocationSize=1, initialValue=1)
      */
     #[Groups(['read:constellation', 'read:infos'])]
+    #[ApiProperty(identifier: true)]
     private $idConstellation;
 
     /**

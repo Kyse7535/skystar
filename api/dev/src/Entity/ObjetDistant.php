@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ObjetDistantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Filter\ObjetDistantFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * ObjetDistant
@@ -18,8 +19,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']],
+    itemOperations: ['get'],
+    collectionOperations: ['get'],
+    paginationEnabled: false,
 )]
+#[ApiFilter(ObjetDistantFilter::class)]
 class ObjetDistant
 {
     /**
@@ -32,6 +37,7 @@ class ObjetDistant
      */
 
     #[Groups(['read:collection'])]
+    #[ApiProperty(identifier: true)]
     private $idObjetDistant;
 
     /**
@@ -47,6 +53,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="deca", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $deca;
 
     /**
@@ -54,6 +61,7 @@ class ObjetDistant
      *
      * @ORM\Column(name="magnitude", type="decimal", precision=10, scale=3, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $magnitude;
 
     /**
