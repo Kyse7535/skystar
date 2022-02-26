@@ -1,34 +1,42 @@
 <mat-grid-list cols="1" rowHeight="250">
-    <mat-grid-tile>
-        <div class="home-section">
-            <div class="home-content-section home-left">
-                <h1>
-                    Baladez-vous dans notre carte intuitive et ouverte pour découvrir le ciel profond
-                </h1>
-                <a mat-raised-button color="accent" routerLink="/carte">Parcourir le ciel profond</a>
-            </div>
-        </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-        <div class="home-section">
-            <div class="home-content-section home-right">
-                <h1>
-                    Utilisez notre système de recherche performant pour retrouver les constellations, les objet distants ou proches...
-                </h1>
-                <a mat-raised-button color="accent" routerLink="/rechercher">Découvrir</a>
-            </div>
-        </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-        <div class="home-section">
-            <div class="home-content-section home-left">
-                <h1>
-                    Astroguessr : trouver des chemins entre les constellations, les objets distants et les objets proches !
-                </h1>
-                <a mat-raised-button color="accent" routerLink="/astroguessr">Amusez-vous</a>
-            </div>
-        </div>
-    </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="home-section">
+      <div class="home-content-section home-left">
+        <h1>
+          Baladez-vous dans notre carte intuitive et ouverte pour découvrir le
+          ciel profond
+        </h1>
+        <a mat-raised-button color="accent" routerLink="/carte"
+          >Parcourir le ciel profond</a
+        >
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="home-section">
+      <div class="home-content-section home-right">
+        <h1>
+          Utilisez notre système de recherche performant pour retrouver les
+          constellations, les objet distants ou proches...
+        </h1>
+        <a mat-raised-button color="accent" routerLink="/rechercher"
+          >Découvrir</a
+        >
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="home-section">
+      <div class="home-content-section home-left">
+        <h1>
+          Astroguessr : trouver des chemins entre les constellations, les objets
+          distants et les objets proches !
+        </h1>
+        <a mat-raised-button color="accent" routerLink="/astroguessr"
+          >Amusez-vous</a
+        >
+      </div>
+    </div>
+  </mat-grid-tile>
 </mat-grid-list>
-<ng-particles [id]="id" [options]="particlesOptions" (particlesLoaded)="particlesLoaded($event)" (particlesInit)="particlesInit($event)"></ng-particles>
-
+<ng-particles [id]="id" [options]="particlesOptions"></ng-particles>
