@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Constellation, ConstellationApi } from './contellation.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConstellationService {
-
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -17,7 +17,7 @@ export class ConstellationService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.log(this.apiUrl)
+      console.log(this.apiUrl);
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
@@ -26,24 +26,21 @@ export class ConstellationService {
     };
   }
 
-  private apiUrl = `http://localhost:8050/api/constellations`;  // URL to web api
+  private apiUrl = `${environment.apiUrl}/api/constellations`; // URL to web api
 
-  constructor(
-    private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getConstellations(): Observable<ConstellationApi> {
-    return this.http.get<ConstellationApi>(this.apiUrl)
-      .pipe(
-        tap(_ => console.log('fetched constellations')),
-        catchError(this.handleError<ConstellationApi>('getConstellations'))
-      );
+    return this.http.get<ConstellationApi>(this.apiUrl).pipe(
+      tap((_) => console.log('fetched constellations')),
+      catchError(this.handleError<ConstellationApi>('getConstellations'))
+    );
   }
 
   getConstellation(id: number): Observable<Constellation> {
-    return this.http.get<Constellation>(this.apiUrl+"/"+id)
-      .pipe(
-        tap(_ => console.log('fetched constellation')),
-        catchError(this.handleError<Constellation>('getConstellation'))
-      );
+    return this.http.get<Constellation>(this.apiUrl + '/' + id).pipe(
+      tap((_) => console.log('fetched constellation')),
+      catchError(this.handleError<Constellation>('getConstellation'))
+    );
   }
 }
