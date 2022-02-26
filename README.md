@@ -41,6 +41,7 @@ Accéder au projet Symfony :
 
 Accéder au projet Angular :
 
+- Modifier l'URL de l'api dans src/environnements/environnement.ts avec le port {API_PORT_LOCAL}
 - localhost:{APP_PORT_LOCAL}
 
 Si vous avez besoin d'installer un package (comme material-ui par exemple)
