@@ -52,3 +52,5 @@ services:
       - /app/.angular
       - /app/node_modules
       - ./app/dev:/app
+    environment:
+      - API_PORT_LOCAL=${API_PORT_LOCAL}

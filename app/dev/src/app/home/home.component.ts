@@ -109,14 +109,14 @@ export class HomeComponent implements OnInit {
   }
 
 
-particlesLoaded(container: Container): void {
-    console.log(container);
-}
+  particlesLoaded(container: Container): void {
+      console.log(container);
+  }
 
-particlesInit(main: Main): void {
-    console.log(main);
-    
-    // Starting from 1.19.0 you can add custom presets or shape here, using the current tsParticles instance (main)
-}
+  particlesInit(main: Main): void {
+      console.log(main);
+      
+      // Starting from 1.19.0 you can add custom presets or shape here, using the current tsParticles instance (main)
+  }
 
 }

@@ -1,1 +1,32 @@
-<p>carte works!</p>
+<div class="container-map">
+  <div>
+    <app-pixi-map></app-pixi-map>
+  </div>
+  <div>
+    <span>RA : {{ pixiMap && pixiMap?.ra }}</span>
+    {{ ", " }}
+    <span>DECA : {{ pixiMap && pixiMap?.deca }} </span>
+    {{ ", " }}
+    <span>MAGNITUDE : {{ pixiMap && pixiMap?.magnitude}} </span>
+  </div>
+  <div>
+    <button mat-raised-button color="accent" (click)="pixiMap.zoomIn()">
+      <mat-icon>zoom_in</mat-icon>
+    </button>
+    <button mat-raised-button color="accent" (click)="pixiMap.zoomOut()">
+      <mat-icon>zoom_out</mat-icon>
+    </button>
+    <button mat-raised-button color="accent" (click)="pixiMap.moveBottom()">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <button mat-raised-button color="accent" (click)="pixiMap.moveLeft()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button mat-raised-button color="accent" (click)="pixiMap.moveTop()">
+      <mat-icon>expand_less</mat-icon>
+    </button>
+    <button mat-raised-button color="accent" (click)="pixiMap.moveRight()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>

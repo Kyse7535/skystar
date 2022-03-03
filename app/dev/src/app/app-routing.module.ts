@@ -6,10 +6,10 @@ import { HomeComponent } from './home/home.component';
 import { ResearchComponent } from './research/research.component';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent },
-  { path: "rechercher", component: ResearchComponent },
-  { path: "carte", component: CarteComponent },
-  { path: "astroguessr", component: AstroguessrComponent }
+  { path: "", component: HomeComponent, data: { title: '' } },
+  { path: "rechercher", component: ResearchComponent, data: { title: 'Rechercher' } },
+  { path: "carte", component: CarteComponent, data: { title: 'Carte' } },
+  { path: "astroguessr", component: AstroguessrComponent, data: { title: 'Astroguessr' } }
 ];
 
 @NgModule({

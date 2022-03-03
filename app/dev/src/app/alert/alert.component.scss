@@ -1,0 +1,41 @@
+@use '@angular/material' as mat;
+@import "../../theme.scss";
+
+$border-size: 1px;
+
+.alert {
+    width: calc(100% - ($border-size * 2));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: $border-size solid white;
+    height: 80px;
+    position: relative;
+}
+
+.alert-info {
+    background-color: mat.get-color-from-palette($my-optionnal, 500) !important;
+}
+
+.alert-primary {
+    background-color: mat.get-color-from-palette($my-primary, 500) !important;
+}
+
+.alert-warning {
+    background-color: mat.get-color-from-palette($my-accent, 500) !important;
+}
+
+.alert-danger {
+    background-color: mat.get-color-from-palette($my-danger, 500) !important;
+}
+
+.mat-icon-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.mat-icon {
+    margin-right: 2px;
+}
