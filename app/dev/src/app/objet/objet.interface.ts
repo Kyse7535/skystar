@@ -1,35 +1,25 @@
 
 interface Objet {
-  "@id": string;
-  "@type": string;
-  ra: number;
-  deca: number;
-  magnitude: number;
+  // "@id": string | undefined | null;
+  // "@type": string | undefined | null;
+  ra: number | string;
+  deca: number | string;
+  magnitude: number | string;
 }
 
 interface ObjetDistant extends Objet {
-  "@id": string;
-  "@type": string;
-  idObjetDistant: string;
+  idObjetDistant: string | number;
   type: string;
-  ra: number;
-  raRadians: number;
-  decRadians: number;
-  deca: number;
-  magnitude: number;
+  raRadians: string | number;
+  decRadians: string | number;
   created: string;
   updated: string;
 }
 
 interface ObjetProche extends Objet {
-  "@id": string;
-  "@type": string;
   idObjetProche: string;
   nom: string;
   type: string;
-  ra: number;
-  deca: number;
-  magnitude: number;
   dateApprobation: string;
 }
 

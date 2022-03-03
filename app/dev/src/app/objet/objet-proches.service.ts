@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, of, tap } from 'rxjs';
-import { ObjetApi, ObjetDistant } from './objet.interface';
+import { ObjetApi, ObjetProche } from './objet.interface';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ObjetDistantService {
+export class ObjetProcheService {
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -26,21 +26,28 @@ export class ObjetDistantService {
     };
   }
 
-  private apiUrl = `${environment.apiUrl}/api/objet_distants`; // URL to web api
+  private apiUrl = `${environment.apiUrl}/api/objet_proches`; // URL to web api
 
   constructor(private http: HttpClient) {}
 
-  getObjetDistants(params?: HttpParams): Observable<ObjetApi> {
+  getObjetProches(params?: HttpParams): Observable<ObjetApi> {
     return this.http.get<ObjetApi>(this.apiUrl, { params }).pipe(
-      tap((_) => console.log('fetched objet distants')),
-      catchError(this.handleError<ObjetApi>('getObjetDistants'))
+      tap((_) => console.log('fetched objet proches')),
+      catchError(this.handleError<ObjetApi>('getObjetProches'))
     );
   }
 
-  getObjetDistant(id: number): Observable<ObjetDistant> {
-    return this.http.get<ObjetDistant>(this.apiUrl + '/' + id).pipe(
-      tap((_) => console.log('fetched objet distant ' + id)),
-      catchError(this.handleError<ObjetDistant>('getObjetDistant'))
+  getObjetProche(id: number): Observable<ObjetProche> {
+    return this.http.get<ObjetProche>(this.apiUrl + '/' + id).pipe(
+      tap((_) => console.log('fetched objet proches ' + id)),
+      catchError(this.handleError<ObjetProche>('getObjetProche'))
     );
+  }
+
+  getAttributes(ra: number, deca: number, magnitude: number): Observable<ObjetProche[]> {
+    return this.http.get<ObjetProche[]>(`${environment.apiUrl}/api/map/objet_proches`, {params: {ra, deca, magnitude}}).pipe(
+      tap((_) => console.log('fetched objet proche platform')),
+      catchError(this.handleError<ObjetProche[]>('getObjetProchePlatform'))
+    )
   }
 }

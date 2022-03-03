@@ -103,12 +103,6 @@
                 matSortDisableClear
                 matSortDirection="desc"
               >
-
-                <ng-container matColumnDef="@id">
-                  <th mat-header-cell *matHeaderCellDef>ID</th>
-                  <td mat-cell *matCellDef="let row">{{ row['@id'] }}</td>
-                </ng-container>
-
                 <ng-container matColumnDef="idObjetDistant">
                   <th mat-header-cell *matHeaderCellDef>ID</th>
                   <td mat-cell *matCellDef="let row">{{ row.idObjetDistant }}</td>
@@ -171,7 +165,14 @@
 
                 <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef>Actions</th>
-                  <td mat-cell *matCellDef="let row">rien</td>
+                  <td mat-cell *matCellDef="let row">
+                    <!-- <button (click)="displayObjetOnMap(row)" matTooltip="Voir l'objet sur la carte" mat-icon-button color="accent" aria-label="Voir sur la carte">
+                      <mat-icon>visibility</mat-icon>
+                    </button> -->
+                    <a mat-raised-button [routerLink]="['/', 'carte']" [queryParams]="{ra: row.ra, deca: row.deca, magnitude: row.magnitude}" matTooltip="Voir l'objet sur la carte" mat-icon-button color="accent" aria-label="Voir sur la carte">
+                      <mat-icon>visibility</mat-icon>
+                    </a>
+                  </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
