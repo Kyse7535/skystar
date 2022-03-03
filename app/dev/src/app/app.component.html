@@ -2,7 +2,7 @@
 <mat-toolbar class="navbar" color="primary">
   <a mat-raised-button color="primary" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/']">Accueil</a>
   <a mat-raised-button color="primary" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/rechercher']">Rechercher</a>
-  <a mat-raised-button color="primary" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/carte']">Carte</a>
+  <a mat-raised-button color="primary" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: false}" [routerLink]="['/carte']">Carte</a>
   <a mat-raised-button color="primary" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/astroguessr']">Astroguessr</a>
 </mat-toolbar>
 <router-outlet></router-outlet>

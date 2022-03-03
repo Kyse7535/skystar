@@ -7,10 +7,11 @@ import { merge, Observable, Subscription } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { Constellation } from '../constellation/contellation.interface';
 import { ConstellationService } from '../constellation/constellation.service';
-import { Objet, ObjetApi } from '../service/objet.interface';
-import { ObjetProcheService } from '../service/objet-proches.service';
-import { ObjetDistantService } from '../service/objet-distants.service';
+import { Objet, ObjetApi } from '../objet/objet.interface';
+import { ObjetProcheService } from '../objet/objet-proches.service';
+import { ObjetDistantService } from '../objet/objet-distants.service';
 import Swal from 'sweetalert2'
+import { Router } from '@angular/router';
 
 interface SimpleError {
   ra: Boolean,
@@ -54,7 +55,8 @@ export class ResearchComponent implements OnInit {
   constructor(
     private constellationService: ConstellationService,
     private objetProcheService: ObjetProcheService,
-    private objetDistantService: ObjetDistantService
+    private objetDistantService: ObjetDistantService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -151,5 +153,9 @@ export class ResearchComponent implements OnInit {
         this.data = data;
         this.onChangeTypeObjet()
       });
+  }
+
+  displayObjetOnMap(obj: Objet): void {
+    // this.router.navigate(["ra", obj.ra, "deca", obj.deca, "magnitude", obj.magnitude], {relativeTo: "/carte"})
   }
 }

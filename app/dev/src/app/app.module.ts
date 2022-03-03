@@ -27,6 +27,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatIconModule} from '@angular/material/icon';
 import { AlertComponent } from './alert/alert.component';
 import { SlideComponent } from './slide/slide.component';
+import { PixiMapComponent } from './pixi-map/pixi-map.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { SlideComponent } from './slide/slide.component';
     AstroguessrComponent,
     AlertComponent,
     SlideComponent,
+    PixiMapComponent,
   ],
   imports: [
     FormsModule,
@@ -59,7 +63,9 @@ import { SlideComponent } from './slide/slide.component';
     MatSortModule,
     MatTableModule,
     MatProgressBarModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonToggleModule,
+    MatTooltipModule
   ],
   providers: [ Title ],
   bootstrap: [AppComponent]
