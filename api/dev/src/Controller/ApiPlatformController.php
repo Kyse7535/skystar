@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiPlatformController extends AbstractController
 {
-    private function get_ra_range($ra_range) {
+    private function get_ra_range($raRange) {
         if(empty($raRange) || !is_numeric($raRange)) {
             $raRange = $this->getParameter("RA_DEFAULT_RANGE");
         }
@@ -29,7 +29,7 @@ class ApiPlatformController extends AbstractController
             }
         }
 
-        return $ra_range;
+        return $raRange;
     }
 
     private function get_deca_range($decaRange) {
@@ -68,7 +68,7 @@ class ApiPlatformController extends AbstractController
         return $this->json($objetDistants, 200, [], ['groups' => 'read:collection']);
     }
 
-    #[Route('/api/map/objet_proches', name: 'api_map_objet_distants', methods:['GET'])]
+    #[Route('/api/map/objet_proches', name: 'api_map_objet_proches', methods:['GET'])]
     public function objet_proches(Request $request, ObjetProcheRepository $repository, EntityManagerInterface $em): Response
     {
         $ra = $request->query->get('ra');
