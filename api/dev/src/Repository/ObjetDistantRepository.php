@@ -37,19 +37,23 @@ class ObjetDistantRepository extends ServiceEntityRepository
 
     }
 
-    public function findByAttribut() : array
+    public function findByAttribut(int $ra, int $deca, int $magnitude, int $raRange, int $decaRange) : array
     {
         $entityManager = $this->getEntityManager();
 
+        $raMin = ($ra-($raRange/2));
+        $raMax = ($ra+($raRange/2));
+        $decaMin = ($deca-($decaRange/2));
+        $decaMax = ($deca+($decaRange/2));
         $query = $entityManager->createQuery(
             'SELECT p    
               FROM App\Entity\ObjetDistant p
-                WHERE p.ra > 0 AND p.ra < 360 
-                    AND  p.deca > -90 
-                    AND p.magnitude > 0 AND p.magnitude < (0 + 7)') ;
+                WHERE p.ra > '.$raMin.' AND p.ra < '.$raMax.'
+                    AND  p.deca > '.$decaMin.'
+                    AND  p.deca < '.$decaMax.'
+                    AND p.magnitude > '.$magnitude.' AND p.magnitude < '.($magnitude + 7)) ;
 
         return $query->getResult();
-
     }
 
 }
