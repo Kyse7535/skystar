@@ -85,6 +85,11 @@ class Jeu
      */
     private $idObjetDistant;
 
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $point;
+
     public function getIdJeu(): ?int
     {
         return $this->idJeu;
@@ -188,6 +193,18 @@ class Jeu
     public function setIdObjetDistant(?ObjetDistant $idObjetDistant): self
     {
         $this->idObjetDistant = $idObjetDistant;
+
+        return $this;
+    }
+
+    public function getPoint(): ?string
+    {
+        return $this->point;
+    }
+
+    public function setPoint(?string $point): self
+    {
+        $this->point = $point;
 
         return $this;
     }

@@ -35,6 +35,7 @@ _vous devez avoir pip d'installer sur votre machine, je n'es pas encore de Docke
 
 Accéder au projet Symfony :
 
+- ouvrir une commande bash dans le container api et dans le dossier /app : symfony console d:m:m
 - localhost:{API_PORT_LOCAL}
 
 ### Pour démarrer le projet angular

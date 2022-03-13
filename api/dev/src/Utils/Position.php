@@ -3,6 +3,7 @@ namespace App\Utils;
 
 use App\Entity\ObjetDistant;
 use App\Entity\Parcours;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 
 class Position {
     # RA
@@ -26,6 +27,10 @@ class Position {
     # Rayon pour random
     final const RA_DEFAULT_RAYON = 20;
     final const DECA_DEFAULT_RAYON = 20;
+
+    # Rayon de succès
+    final const RA_SUCCEED_RAYON = 0.5;
+    final const DECA_SUCCEED_RAYON = 0.5;
 
     /**
      * Renvoie RA Range en fonction d'une valeur
@@ -104,5 +109,18 @@ class Position {
             floor($o->getMagnitude()));
 
         return $parcour;
+    }
+
+    /**
+     * Vérifie si l'objet est bien dans le rayon de réussite
+     */
+    public static function check_is_object_find(ObjetDistant $o, float $ra, float $deca): bool {
+        $raAccuracy = abs($o->getRa() - $ra);
+        $decaAccuracy = abs($o->getDeca() - $deca);
+
+        if($raAccuracy <= Position::RA_SUCCEED_RAYON && $decaAccuracy <= Position::DECA_SUCCEED_RAYON)
+            return true;
+
+        return false;
     }
 }

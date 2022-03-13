@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Utils\Position;
+use DateInterval;
+use DateTime;
 use DateTimeImmutable;
 
 #[Route('/api/jeu', name: 'api_jeu_')]
@@ -52,6 +54,58 @@ class JeuController extends AbstractController
         $em->flush();
         
         return $this->json($parcour, 201);
+    }
+
+    /**
+     * Proposer une solution
+     * La partie se termine lorsque le joueur a trouver l'objet rechercher
+     */
+    #[Route('/{id}/trouver', name: 'trouver', methods:['POST'])]
+    public function trouver(Jeu $jeu, Request $request, ObjetDistantRepository $objetDistantRepository, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        if(!$user || str_replace(" ", "", $jeu->getPseudo()) != str_replace(" ", "", $user->getUserIdentifier()))
+            throw new UnauthorizedHttpException("Vous devez être connecter");
+
+        $json_request = json_decode(
+            $request->getContent(),
+            true
+        );
+
+        if(!$json_request)
+            return $this->json(["message" => "RA et DECA doivent être renseigner."], 401, [], ['groups' => 'read:collection']);
+
+        $ra = key_exists("ra", $json_request) ? $json_request["ra"] : null;
+        $deca = key_exists("deca", $json_request) ? $json_request["deca"] : null;
+        
+        if(!is_numeric($ra) 
+            || !is_numeric($deca))
+            return $this->json(["message" => "RA et DECA doivent être renseigner."], 401, [], ['groups' => 'read:collection']);
+    
+        // Si l'objet n'est pas trouvé
+        if(!Position::check_is_object_find($jeu->getIdObjetDistant(), $ra, $deca))
+            return $this->json([
+                "message" => "Vous vous êtes tromper ! Réessayer ultérieurement :p",
+                "response" => "INVALID"
+            ], 201);
+
+        // Si l'objet a été trouvé
+        $jeu->setTrouver(1);
+        $jeu->setDuree(new DateTimeImmutable());
+
+        // Calcul des points par le nombre de seconde pour trouver l'objet
+        $jeu->setPoint(
+            strtotime($jeu->getDuree()->format("c"))-
+            strtotime($jeu->getDateCreation()->format("c")));
+
+        $em->persist($jeu);
+        $em->flush();
+
+        return $this->json([
+            "jeu" => $jeu,
+            "message" => "CONGRATS", 
+            "response" => "VALID"
+        ], 201);
     }
 
     /**
@@ -99,6 +153,7 @@ class JeuController extends AbstractController
 
             // Fournir le point de départ à la vue
             $data = [
+                "id_jeu" => $jeu->getIdJeu(),
                 "objet_distant" => $jeu->getIdObjetDistant(),
                 "first_point" => $parcour
             ];
