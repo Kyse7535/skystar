@@ -4,12 +4,6 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-  RA_MAX_RANGE: "%env(RA_MAX_RANGE)%"
-  RA_MIN_RANGE: "%env(RA_MIN_RANGE)%"
-  RA_DEFAULT_RANGE: "%env(RA_DEFAULT_RANGE)%"
-  DECA_MAX_RANGE: "%env(DECA_MAX_RANGE)%"
-  DECA_MIN_RANGE: "%env(DECA_MIN_RANGE)%"
-  DECA_DEFAULT_RANGE: "%env(DECA_DEFAULT_RANGE)%"
 
 services:
   # default configuration for services in *this* file
