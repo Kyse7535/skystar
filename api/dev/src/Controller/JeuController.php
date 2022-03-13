@@ -77,28 +77,39 @@ class JeuController extends AbstractController
         // Trouver un objet proche random
         $objetDistant = $objetDistantRepository->findOneRandom();
 
-        // Créer la partie
-        $jeu = new Jeu();
-        $jeu->setIdObjetDistant($objetDistant);
-        $jeu->setPseudo($user->getUserIdentifier());
-        $jeu->setTrouver(false);
-        $jeu->setDateCreation(new DateTimeImmutable());
-        $em->persist($jeu);
-        $em->flush();
+        $em->getConnection()->beginTransaction(); // suspend auto-commit
+        try {
+            // Créer la partie
+            $jeu = new Jeu();
+            $jeu->setIdObjetDistant($objetDistant);
+            $jeu->setPseudo($user->getUserIdentifier());
+            $jeu->setTrouver(false);
+            $jeu->setDateCreation(new DateTimeImmutable());
+            $em->persist($jeu);
+            $em->flush();
 
-        // On génère le point de départ, comme la première étape du parcour
-        $parcour = Position::generate_random_parcour($objetDistant);
+            // On génère le point de départ, comme la première étape du parcour
+            $parcour = Position::generate_random_parcour($objetDistant);
 
-        $parcour->setIdJeu($jeu);
-        $em->persist($parcour);
-        $em->flush();
+            $parcour->setIdJeu($jeu);
+            $em->persist($parcour);
+            $em->flush();
 
-        // Fournir le point de départ à la vue
-        $data = [
-            "objet_distant" => $jeu->getIdObjetDistant(),
-            "first_point" => $parcour
-        ];
+            $em->getConnection()->commit();
 
-        return $this->json($data, 201);
+            // Fournir le point de départ à la vue
+            $data = [
+                "objet_distant" => $jeu->getIdObjetDistant(),
+                "first_point" => $parcour
+            ];
+
+            return $this->json($data, 201);
+        // On push les deux data dans la bdd simultanéments, pour éviter qu'une erreur survienne entre les deux.
+        // Par exemple, un jeu est push, et une erreur est générer dans la création du parcour, et on a un jeu sans parcour initial.
+        // Pour éviter ça, on effectue nos calcul et on push tout en même temps.
+        } catch (\Exception $e) {
+            $em->getConnection()->rollBack();
+            throw $e;
+        }
     }
 }
