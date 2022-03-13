@@ -6,6 +6,7 @@ use App\Entity\ObjetDistant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 
 /**
  * @method ObjetDistant|null find($id, $lockMode = null, $lockVersion = null)
@@ -54,6 +55,14 @@ class ObjetDistantRepository extends ServiceEntityRepository
                     AND p.magnitude > '.$magnitude.' AND p.magnitude < '.($magnitude + 7)) ;
 
         return $query->getResult();
+    }
+
+    public function findOneRandom(): ObjetDistant {
+        $query = $this->createQueryBuilder("o")
+            ->orderBy('RANDOM()')
+            ->setMaxResults(1);
+
+        return $query->getQuery()->getOneOrNullResult();
     }
 
 }
