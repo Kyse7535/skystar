@@ -25,7 +25,7 @@ class JeuRepository extends ServiceEntityRepository
             ->where(
                 "j.trouver = 1"
             )
-            ->orderBy("j.duree", "ASC")
+            ->orderBy("j.point", "ASC")
             ->setMaxResults(10)
             ->getQuery();
 
