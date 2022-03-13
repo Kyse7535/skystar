@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Utils\Position;
+use DateTimeImmutable;
 
 #[Route('/api/jeu', name: 'api_jeu_')]
 class JeuController extends AbstractController
@@ -28,7 +30,7 @@ class JeuController extends AbstractController
      * Créer une partie
      */
     #[Route('/start', name: 'start', methods:['POST'])]
-    public function start(JeuRepository $jeuRepository, ObjetDistantRepository $objetDistantRepository, EntityManagerInterface $em): Response
+    public function start(ObjetDistantRepository $objetDistantRepository, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
         if(!$user)
@@ -42,25 +44,21 @@ class JeuController extends AbstractController
         $jeu->setIdObjetDistant($objetDistant);
         $jeu->setPseudo($user->getUserIdentifier());
         $jeu->setTrouver(false);
+        $jeu->setDateCreation(new DateTimeImmutable());
         $em->persist($jeu);
         $em->flush();
 
-        // Générer des valeurs de RA et DECA
-        $randomRa = 0;
-        $randomDeca = 0;
-
         // On génère le point de départ, comme la première étape du parcour
-        $parcour = [
-            "magnitude" => floor($objetDistant->getMagnitude()),
-            "ra" => $randomRa,
-            "deca" => $randomDeca
-        ];
+        $parcour = Position::generate_random_parcour($objetDistant);
+
+        $parcour->setIdJeu($jeu);
+        $em->persist($parcour);
+        $em->flush();
 
         // Fournir le point de départ à la vue
         $data = [
-            "jeu" => $jeu->getIdJeu(),
-            "joueur" => $jeu->getPseudo(),
-            "point" => $parcour
+            "objet_distant" => $jeu->getIdObjetDistant(),
+            "first_point" => $parcour
         ];
 
         return $this->json($data, 201);

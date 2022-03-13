@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * Parcours
  *
  * @ORM\Table(name="parcours", indexes={@ORM\Index(name="i_fk_parcours_jeu", columns={"id_jeu"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Parcours
 {
@@ -59,7 +61,8 @@ class Parcours
 
     /**
      * @var \Jeu
-     *
+     * 
+     * @Ignore()
      * @ORM\ManyToOne(targetEntity="Jeu")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_jeu", referencedColumnName="id_jeu")
@@ -113,9 +116,12 @@ class Parcours
         return $this->created;
     }
 
-    public function setCreated(?\DateTimeInterface $created): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreated(): self
     {
-        $this->created = $created;
+        $this->created = new \DateTimeImmutable();
 
         return $this;
     }
@@ -125,9 +131,12 @@ class Parcours
         return $this->updated;
     }
 
-    public function setUpdated(?\DateTimeInterface $updated): self
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdated(): self
     {
-        $this->updated = $updated;
+        $this->updated = new \DateTimeImmutable();
 
         return $this;
     }
