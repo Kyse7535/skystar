@@ -54,3 +54,4 @@ services:
       - ./app/dev:/app
     environment:
       - API_PORT_LOCAL=${API_PORT_LOCAL}
+    tty: true

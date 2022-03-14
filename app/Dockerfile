@@ -22,4 +22,4 @@ RUN yarn install
 
 COPY /dev /app/
 
-CMD ng serve --host 0.0.0.0
+CMD ng serve --poll 2000 --host 0.0.0.0

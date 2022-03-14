@@ -13,6 +13,9 @@ import { ObjetDistantService } from '../objet/objet-distants.service';
 import { ObjetProcheService } from '../objet/objet-proches.service';
 import { ObjetProche } from './objet-proche';
 import { Position } from './position';
+import { Output, EventEmitter } from '@angular/core';
+
+
 import {
   ObjetDistant as ODInterface,
   ObjetProche as OPInterface,
@@ -24,6 +27,8 @@ import { Map } from './map';
   templateUrl: './pixi-map.component.html',
 })
 export class PixiMapComponent implements OnInit, OnDestroy {
+  @Output() eventPosition = new EventEmitter<Position>()
+
   private sizeMapX: number = 600;
   private sizeMapY: number = 600;
   private areaX: number = 100;
@@ -87,6 +92,10 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     });
   }
 
+  getPosition() {
+    
+  }
+
   zoomIn(): void {
     this.position.magnitude = this.position.magnitude += 1;
     this.loadData();
@@ -139,7 +148,7 @@ export class PixiMapComponent implements OnInit, OnDestroy {
 
     this.map.x = this.areaX / 2;
     this.map.y = this.areaY / 2;
-    this.loadData();
+    // this.loadData();
   }
 
   ngOnDestroy(): void {
@@ -162,6 +171,6 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     this.position.ra = ra;
     this.position.deca = deca;
     this.position.magnitude = magnitude;
-    this.loadData();
+    // this.loadData();
   }
 }

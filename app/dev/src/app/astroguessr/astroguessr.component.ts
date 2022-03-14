@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./astroguessr.component.scss']
 })
 export class AstroguessrComponent implements OnInit {
+  pseudo: string = ' '; 
 
   constructor() { }
 
