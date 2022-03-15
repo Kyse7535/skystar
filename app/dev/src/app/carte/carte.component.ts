@@ -10,20 +10,17 @@ import { Position } from '../pixi-map/position';
   styleUrls: ['./carte.component.scss']
 })
 export class CarteComponent implements OnInit {
-  
-
-  ra: string = '';
-  dec: string = '';
-  magnitude: string = '';
+  ra!: number;
+  dec!: number;
+  magnitude!: number;
   //constel: string = '' ; 
   //filter: string = '';
-  
  
   @ViewChild(PixiMapComponent) pixiMap!: PixiMapComponent;
   constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
+
   }
 
   formatLabel(value: number): string | number  {
@@ -32,10 +29,7 @@ export class CarteComponent implements OnInit {
     }
 
     return value;
-
   }
-
-
 
   ngAfterViewInit(): void {
     const queryParams = this.activatedRoute.snapshot.queryParams
@@ -45,11 +39,16 @@ export class CarteComponent implements OnInit {
 
     if(ra !== NaN && deca !== NaN && magnitude !== NaN) 
       this.pixiMap.updatePosition(ra, deca, magnitude)
-    
   }
 
   getPos( pos: Position) : void  {
-    console.log(pos)
+    // setTimeout : Why ?
+    // watch that : https://angular.io/errors/NG0100
+    setTimeout(() => {
+      this.ra = pos.ra
+      this.dec = pos.deca
+      this.magnitude = pos.magnitude
+    }, 0)
   }
 
 }

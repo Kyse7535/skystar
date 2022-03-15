@@ -52,17 +52,9 @@
       </mat-expansion-panel>
     </div>
   
-  
     <div class="container-map">
       <div>
-        <app-pixi-map></app-pixi-map>
-      </div>
-      <div>
-        <span>RA : {{ pixiMap && pixiMap?.ra }}</span>
-        {{ ", " }}
-        <span>DECA : {{ pixiMap && pixiMap?.deca }} </span>
-        {{ ", " }}
-        <span>MAGNITUDE : {{ pixiMap && pixiMap?.magnitude}} </span>
+        <app-pixi-map (eventPosition)="getPos($event)"></app-pixi-map>
       </div>
       <div>
         <button mat-raised-button color="accent" (click)="pixiMap.zoomIn()">
@@ -87,6 +79,3 @@
     </div>
   </div>
 </section>
-
-
-<div  (eventPosition) = "getPos($event)" > </div>

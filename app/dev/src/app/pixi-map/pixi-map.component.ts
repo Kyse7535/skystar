@@ -1,9 +1,12 @@
 import {
   Component,
+  DoCheck,
   ElementRef,
+  OnChanges,
   OnDestroy,
   OnInit,
   Renderer2,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as PIXI from 'pixi.js';
@@ -35,6 +38,7 @@ export class PixiMapComponent implements OnInit, OnDestroy {
   private areaY: number = 100;
 
   private position: Position = new Position(this.sizeMapX, this.sizeMapY);
+
   private map: Map = new Map(this.position);
   private app: PIXI.Application = new PIXI.Application({
     width: this.sizeMapX + this.areaX,
@@ -73,6 +77,9 @@ export class PixiMapComponent implements OnInit, OnDestroy {
    * On charge les données
    */
   loadData(): void {
+    // A chaque fois que les datas sont chargés, ça veut dire que la position a été modifié, alors on envoie les datas
+    this.eventPosition.emit(this.position);
+
     // Si on a pas finit de charger les datas précédents, on cancel la requête pour en faire une nouvelle
     if (this.subscribeResearch) this.subscribeResearch.unsubscribe();
 
@@ -90,10 +97,6 @@ export class PixiMapComponent implements OnInit, OnDestroy {
 
       this.map.draw(containers);
     });
-  }
-
-  getPosition() {
-    
   }
 
   zoomIn(): void {
@@ -148,29 +151,17 @@ export class PixiMapComponent implements OnInit, OnDestroy {
 
     this.map.x = this.areaX / 2;
     this.map.y = this.areaY / 2;
-    // this.loadData();
+    this.loadData();
   }
 
   ngOnDestroy(): void {
     this.app.destroy();
   }
 
-  get ra(): number {
-    return this.position.ra;
-  }
-
-  get deca(): number {
-    return this.position.deca;
-  }
-
-  get magnitude(): number {
-    return this.position.magnitude;
-  }
-
   updatePosition(ra: number, deca: number, magnitude: number): void {
     this.position.ra = ra;
     this.position.deca = deca;
     this.position.magnitude = magnitude;
-    // this.loadData();
+    this.loadData()
   }
 }
