@@ -1,9 +1,12 @@
 import {
   Component,
+  DoCheck,
   ElementRef,
+  OnChanges,
   OnDestroy,
   OnInit,
   Renderer2,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as PIXI from 'pixi.js';
@@ -13,6 +16,9 @@ import { ObjetDistantService } from '../objet/objet-distants.service';
 import { ObjetProcheService } from '../objet/objet-proches.service';
 import { ObjetProche } from './objet-proche';
 import { Position } from './position';
+import { Output, EventEmitter } from '@angular/core';
+
+
 import {
   ObjetDistant as ODInterface,
   ObjetProche as OPInterface,
@@ -24,12 +30,15 @@ import { Map } from './map';
   templateUrl: './pixi-map.component.html',
 })
 export class PixiMapComponent implements OnInit, OnDestroy {
+  @Output() eventPosition = new EventEmitter<Position>()
+
   private sizeMapX: number = 600;
   private sizeMapY: number = 600;
   private areaX: number = 100;
   private areaY: number = 100;
 
   private position: Position = new Position(this.sizeMapX, this.sizeMapY);
+
   private map: Map = new Map(this.position);
   private app: PIXI.Application = new PIXI.Application({
     width: this.sizeMapX + this.areaX,
@@ -68,6 +77,9 @@ export class PixiMapComponent implements OnInit, OnDestroy {
    * On charge les données
    */
   loadData(): void {
+    // A chaque fois que les datas sont chargés, ça veut dire que la position a été modifié, alors on envoie les datas
+    this.eventPosition.emit(this.position);
+
     // Si on a pas finit de charger les datas précédents, on cancel la requête pour en faire une nouvelle
     if (this.subscribeResearch) this.subscribeResearch.unsubscribe();
 
@@ -146,22 +158,10 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     this.app.destroy();
   }
 
-  get ra(): number {
-    return this.position.ra;
-  }
-
-  get deca(): number {
-    return this.position.deca;
-  }
-
-  get magnitude(): number {
-    return this.position.magnitude;
-  }
-
   updatePosition(ra: number, deca: number, magnitude: number): void {
     this.position.ra = ra;
     this.position.deca = deca;
     this.position.magnitude = magnitude;
-    this.loadData();
+    this.loadData()
   }
 }

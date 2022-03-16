@@ -30,6 +30,8 @@ import { SlideComponent } from './slide/slide.component';
 import { PixiMapComponent } from './pixi-map/pixi-map.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatProgressBarModule,
     MatIconModule,
     MatButtonToggleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatExpansionModule,
+    MatSliderModule
   ],
   providers: [ Title ],
   bootstrap: [AppComponent]
