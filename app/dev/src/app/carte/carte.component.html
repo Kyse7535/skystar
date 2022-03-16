@@ -1,32 +1,81 @@
-<div class="container-map">
-  <div>
-    <app-pixi-map></app-pixi-map>
+<section>
+  <div class="container">
+    <div class="container-content">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+          Affichage
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card>
+          <mat-card-content>
+            <mat-grid-list cols="1" rowHeight="100">
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>RA</mat-label>
+                  <input [(ngModel)]="ra" name="ra" type="number" matInput />
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>DEC</mat-label>
+                    <input  [(ngModel)]="dec" name="dec" type="number" matInput />
+                  </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>V Magnitude</mat-label>
+                  <input  [(ngModel)]="magnitude" name="magnitude" type="number" matInput />
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <mat-divider></mat-divider>
+            <mat-grid-list cols="1" rowHeight="100">
+              <mat-grid-tile>
+                <mat-label>Range RA </mat-label>
+                <mat-slider min="1" max = "5"> </mat-slider>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <mat-divider></mat-divider>  
+            <mat-grid-list cols="1" rowHeight="100">
+              <mat-grid-tile>
+                <mat-label>Range DECA </mat-label>
+                <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000"
+                 step= "1000" min="0" max = "10000"> </mat-slider>
+              </mat-grid-tile>
+            </mat-grid-list>
+            <mat-card-actions>
+              <button mat-raised-button type="submit"> Filtrer </button>
+            </mat-card-actions>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    </div>
+  
+    <div class="container-map">
+      <div>
+        <app-pixi-map (eventPosition)="getPos($event)"></app-pixi-map>
+      </div>
+      <div>
+        <button mat-raised-button color="accent" (click)="pixiMap.zoomIn()">
+          <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" (click)="pixiMap.zoomOut()">
+          <mat-icon>zoom_out</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" (click)="pixiMap.moveBottom()">
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" (click)="pixiMap.moveLeft()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" (click)="pixiMap.moveTop()">
+          <mat-icon>expand_less</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" (click)="pixiMap.moveRight()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
   </div>
-  <div>
-    <span>RA : {{ pixiMap && pixiMap?.ra }}</span>
-    {{ ", " }}
-    <span>DECA : {{ pixiMap && pixiMap?.deca }} </span>
-    {{ ", " }}
-    <span>MAGNITUDE : {{ pixiMap && pixiMap?.magnitude}} </span>
-  </div>
-  <div>
-    <button mat-raised-button color="accent" (click)="pixiMap.zoomIn()">
-      <mat-icon>zoom_in</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" (click)="pixiMap.zoomOut()">
-      <mat-icon>zoom_out</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" (click)="pixiMap.moveBottom()">
-      <mat-icon>expand_more</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" (click)="pixiMap.moveLeft()">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" (click)="pixiMap.moveTop()">
-      <mat-icon>expand_less</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" (click)="pixiMap.moveRight()">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
-  </div>
-</div>
+</section>

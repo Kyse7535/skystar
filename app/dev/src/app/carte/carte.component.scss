@@ -1,5 +1,103 @@
+@use '@angular/material' as mat;
+@import "../../theme.scss";
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+}
+
+.container-content {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    justify-content: right;
+    width: 50%;
+}
+
+.mat-expansion-panel {
+    background-color: whitesmoke;
+    color: white;
+}
+
+.mat-card {
+    background-color: mat.get-color-from-palette($my-accent, 500);
+    border: 1px solid white;
+    border-radius: 25px;
+    padding: 10px;
+    color: white;
+}
+
+
+.mat-card-actions a, .mat-card-actions button {
+    background-color: mat.get-color-from-palette($my-optionnal, 500);
+    color: white;
+    border: 1px solid white;
+    padding: 0px 25px;
+    text-align: center;
+}
+
+.mat-divider {
+    background-color: white;
+    left: auto !important;
+    position: relative !important;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.mat-slider{
+    width : 300px ;
+    margin-left: 10px;
+    color: White 
+}
+
 .container-map {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10px;
+}
+
+
+::ng-deep .mat-form-field {
+    width: 100%;
+
+    .mat-form-field-label {
+        color: white;
+    }
+    .mat-form-field-ripple {
+        background-color: white;
+    }
+    .mat-form-field-required-marker {
+        color: white;
+    }
+    .mat-input-element {
+        color: white;
+    }
+
+    .mat-form-field-wrapper {
+        margin-right: 20px;
+    }
+}
+
+::ng-deep .mat-form-field.mat-focused {
+    .mat-form-field-label {
+        color: white;
+    }
+    .mat-form-field-ripple {
+        background-color: white;
+    }
+    .mat-form-field-required-marker {
+        color: white;
+    }
+    .mat-input-element {
+        color: white;
+    }
+}
+
+::ng-deep .mat-expansion-panel-header {
+    .mat-panel-title {
+        position: absolute;
+    }
+
 }
