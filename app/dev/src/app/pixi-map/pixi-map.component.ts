@@ -32,17 +32,12 @@ import { Map } from './map';
 export class PixiMapComponent implements OnInit, OnDestroy {
   @Output() eventPosition = new EventEmitter<Position>()
 
-  private sizeMapX: number = 600;
-  private sizeMapY: number = 600;
-  private areaX: number = 100;
-  private areaY: number = 100;
-
-  private position: Position = new Position(this.sizeMapX, this.sizeMapY);
+  private position: Position = new Position(600, 600);
 
   private map: Map = new Map(this.position);
   private app: PIXI.Application = new PIXI.Application({
-    width: this.sizeMapX + this.areaX,
-    height: this.sizeMapY + this.areaY,
+    width: 600,
+    height: 600
   });
 
   private subscribeResearch!: Subscription;
@@ -133,28 +128,16 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
+  getPosition(): Position {
+    return this.position
+  }
+
   ngAfterViewInit(): void {
     this.renderer2.appendChild(this.el.nativeElement, this.app.view);
   }
 
   ngOnInit(): void {
     this.app.stage.addChild(this.map);
-
-    /** TEST */
-    const t = new PIXI.Text(String(this.position.ra));
-    t.style.fill = 'white';
-    t.x = 350;
-    t.y = 0;
-    this.app.stage.addChild(t);
-
-    let obj = new PIXI.Graphics();
-    obj.lineStyle(1, 0xffffff).moveTo(50, 50).lineTo(650, 50);
-
-    this.app.stage.addChild(obj);
-    /** FIN TEST */
-
-    this.map.x = this.areaX / 2;
-    this.map.y = this.areaY / 2;
     this.loadData();
   }
 

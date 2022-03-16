@@ -1,18 +1,37 @@
 <section>
     <div class="container">
-        <div class="container-content">
+        <div class="container-content" *ngIf="!gameStarted">
             <mat-card>
                 <mat-card-title> Démarrer une nouvelle partie </mat-card-title>
                 <mat-card-content>
                     <mat-form-field appearance="fill">
                         <mat-label>Entrer votre pseudo </mat-label>
-                        <input [(ngModel)]="pseudo" name="pseudo" type="number" matInput />
+                        <input [(ngModel)]="user.pseudo" name="pseudo" type="text" matInput />
                     </mat-form-field>
                     <mat-card-actions>
-                        <button mat-raised-button type="submit">  Démarrer </button>
+                        <button mat-raised-button (click)="login()">  Démarrer </button>
                     </mat-card-actions>
                 </mat-card-content>    
             </mat-card>    
+        </div>
+    </div>
+    <div class="container-map" *ngIf="gameStarted">
+        <div>
+            <app-pixi-map #pixiMap></app-pixi-map>
+        </div>
+        <div>
+        <button mat-raised-button color="accent" (click)="moveBottom()">
+            <mat-icon>expand_more</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" (click)="moveLeft()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" (click)="moveTop()">
+            <mat-icon>expand_less</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" (click)="moveRight()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
         </div>
     </div>
 </section> 
