@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PixiMapComponent } from '../pixi-map/pixi-map.component';
 import { ActivatedRoute } from "@angular/router";
-import { PositionStrategy } from '@angular/cdk/overlay';
 import { Position } from '../pixi-map/position';
 
 @Component({
@@ -13,6 +12,13 @@ export class CarteComponent implements OnInit {
   ra!: number;
   dec!: number;
   magnitude!: number;
+  raRangemin !: number; 
+  raRangemax !: number; 
+  decaRangemin !: number;
+  decaRangemax !: number;
+  raRange !: number;
+  decaRange !: number; 
+
   //constel: string = '' ; 
   //filter: string = '';
  
@@ -23,14 +29,7 @@ export class CarteComponent implements OnInit {
 
   }
 
-  formatLabel(value: number): string | number  {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-
-    return value;
-  }
-
+  
   ngAfterViewInit(): void {
     const queryParams = this.activatedRoute.snapshot.queryParams
     const ra = Number(queryParams?.['ra'])
@@ -41,6 +40,11 @@ export class CarteComponent implements OnInit {
       this.pixiMap.updatePosition(ra, deca, magnitude)
   }
 
+  onFiltrer() {
+    this.pixiMap.updatePosition(this.ra, this.dec, this.magnitude)
+  }
+
+  
   getPos( pos: Position) : void  {
     // setTimeout : Why ?
     // watch that : https://angular.io/errors/NG0100
@@ -48,6 +52,12 @@ export class CarteComponent implements OnInit {
       this.ra = pos.ra
       this.dec = pos.deca
       this.magnitude = pos.magnitude
+      this.raRange = pos.raRange
+      this.raRangemin = pos.raRangeMin
+      this.raRangemax = pos.raRangeMax
+      this.decaRange = pos.decaRange
+      this.decaRangemin = pos.decaRangeMin
+      this.decaRangemax = pos.decaRangeMax
     }, 0)
   }
 

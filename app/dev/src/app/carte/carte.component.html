@@ -33,19 +33,20 @@
             <mat-grid-list cols="1" rowHeight="100">
               <mat-grid-tile>
                 <mat-label>Range RA </mat-label>
-                <mat-slider min="1" max = "5"> </mat-slider>
+                <mat-slider thumbLabel 
+                     [min]="raRangemin" step="1" [max]="raRangemax" [value]="raRange"  > </mat-slider>
               </mat-grid-tile>
             </mat-grid-list>
             <mat-divider></mat-divider>  
             <mat-grid-list cols="1" rowHeight="100">
               <mat-grid-tile>
                 <mat-label>Range DECA </mat-label>
-                <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000"
-                 step= "1000" min="0" max = "10000"> </mat-slider>
+                <mat-slider thumbLabel
+                 step= "1" [min]="decaRangemin" [max]= "decaRangemax"  [value]="decaRange"> </mat-slider>
               </mat-grid-tile>
             </mat-grid-list>
             <mat-card-actions>
-              <button mat-raised-button type="submit"> Filtrer </button>
+              <button mat-raised-button (click)="onFiltrer()" type="submit"> Filtrer </button>
             </mat-card-actions>
           </mat-card-content>
         </mat-card>

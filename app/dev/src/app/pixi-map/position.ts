@@ -67,6 +67,24 @@ export class Position {
     return this._raRange
   }
 
+  public get raRangeMin(): number {
+    return this._raRangeMin
+  }
+
+  public get raRangeMax(): number {
+    return this._raRangeMax
+  }
+
+
+  public get decaRangeMin(): number {
+    return this._decaRangeMin
+  }
+
+  public get decaRangeMax(): number {
+    return this._decaRangeMax
+  }
+
+
   public set decaRange(newDecaRange: number) {
     if(newDecaRange <= this._decaRangeMax && newDecaRange >= this._decaRangeMin)
       this._decaRange = newDecaRange
