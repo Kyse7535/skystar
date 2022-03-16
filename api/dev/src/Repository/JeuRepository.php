@@ -19,5 +19,17 @@ class JeuRepository extends ServiceEntityRepository
         parent::__construct($registry, Jeu::class);
     }
 
+    public function get10Best(): array {
+        $query = $this
+            ->createQueryBuilder("j")
+            ->where(
+                "j.trouver = 1"
+            )
+            ->orderBy("j.point", "ASC")
+            ->setMaxResults(10)
+            ->getQuery();
+
+        return $query->execute();
+    }
 
 }

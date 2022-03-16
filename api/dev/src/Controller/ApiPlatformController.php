@@ -13,41 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use \Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Utils\Position;
 
 class ApiPlatformController extends AbstractController
 {
-    private function get_ra_range($raRange) {
-        if(empty($raRange) || !is_numeric($raRange)) {
-            $raRange = $this->getParameter("RA_DEFAULT_RANGE");
-        }
-        else {
-            if($raRange > $this->getParameter("RA_MAX_RANGE")) {
-                $raRange = $this->getParameter("RA_MAX_RANGE");
-            }
-            if($raRange < $this->getParameter("RA_MIN_RANGE")) {
-                $raRange = $this->getParameter("RA_MIN_RANGE");
-            }
-        }
-
-        return $raRange;
-    }
-
-    private function get_deca_range($decaRange) {
-        if(empty($decaRange) || is_numeric($decaRange)) {
-            $decaRange = $this->getParameter("DECA_DEFAULT_RANGE");
-        }
-        else {
-            if($decaRange > $this->getParameter("DECA_MAX_RANGE")) {
-                $decaRange = $this->getParameter("DECA_MAX_RANGE");
-            }
-            if($decaRange < $this->getParameter("DECA_MIN_RANGE")) {
-                $decaRange = $this->getParameter("DECA_MIN_RANGE");
-            }
-        } 
-
-        return $decaRange;
-    }
-
     #[Route('/api/map/objet_distants', name: 'api_map_objet_distants', methods:['GET'])]
     public function objet_distants(Request $request, ObjetDistantRepository $repository, EntityManagerInterface $em): Response
     {
@@ -60,8 +29,8 @@ class ApiPlatformController extends AbstractController
             || !is_numeric($magnitude))
             return $this->json(["message" => "RA, DECA et Magnitude doivent être renseigner."], 401, [], ['groups' => 'read:collection']);
 
-        $raRange = $this->get_ra_range($request->query->get('raRange'));
-        $decaRange = $this->get_deca_range($request->query->get('decaRange'));     
+        $raRange = Position::get_ra_range($request->query->get('raRange'));
+        $decaRange = Position::get_deca_range($request->query->get('decaRange'));     
 
         $objetDistants = $repository->findByAttribut((int) $ra, (int) $deca, (int) $magnitude, $raRange, $decaRange);
 
@@ -80,8 +49,8 @@ class ApiPlatformController extends AbstractController
             || !is_numeric($magnitude))
             return $this->json(["message" => "RA, DECA et Magnitude doivent être renseigner."], 401, [], ['groups' => 'read:collection']);
 
-        $raRange = $this->get_ra_range($request->query->get('raRange'));
-        $decaRange = $this->get_deca_range($request->query->get('decaRange'));                 
+        $raRange = Position::get_ra_range($request->query->get('raRange'));
+        $decaRange = Position::get_deca_range($request->query->get('decaRange'));                 
 
         $objetProches = $repository->findByAttribut((int) $ra, (int) $deca, (int) $magnitude, $raRange, $decaRange);
 

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="jeu", indexes={@ORM\Index(name="i_fk_jeu_objet_distant", columns={"id_objet_distant"}), @ORM\Index(name="i_fk_jeu_constellation", columns={"id_constellation"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Jeu
 {
@@ -84,6 +85,11 @@ class Jeu
      */
     private $idObjetDistant;
 
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $point;
+
     public function getIdJeu(): ?int
     {
         return $this->idJeu;
@@ -142,9 +148,12 @@ class Jeu
         return $this->created;
     }
 
-    public function setCreated(?\DateTimeInterface $created): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreated(): self
     {
-        $this->created = $created;
+        $this->created = new \DateTimeImmutable();
 
         return $this;
     }
@@ -154,9 +163,12 @@ class Jeu
         return $this->updated;
     }
 
-    public function setUpdated(?\DateTimeInterface $updated): self
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdated(): self
     {
-        $this->updated = $updated;
+        $this->updated = new \DateTimeImmutable();
 
         return $this;
     }
@@ -181,6 +193,18 @@ class Jeu
     public function setIdObjetDistant(?ObjetDistant $idObjetDistant): self
     {
         $this->idObjetDistant = $idObjetDistant;
+
+        return $this;
+    }
+
+    public function getPoint(): ?string
+    {
+        return $this->point;
+    }
+
+    public function setPoint(?string $point): self
+    {
+        $this->point = $point;
 
         return $this;
     }
