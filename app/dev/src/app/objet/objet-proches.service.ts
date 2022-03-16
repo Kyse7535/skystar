@@ -44,8 +44,9 @@ export class ObjetProcheService {
     );
   }
 
-  getAttributes(ra: number, deca: number, magnitude: number): Observable<ObjetProche[]> {
-    return this.http.get<ObjetProche[]>(`${environment.apiUrl}/api/map/objet_proches`, {params: {ra, deca, magnitude}}).pipe(
+  getAttributes(ra: number, deca: number, magnitude: number, raRange: number, decaRange: number): Observable<ObjetProche[]> {
+    return this.http.get<ObjetProche[]>(`${environment.apiUrl}/api/map/objet_proches`,
+     {params: {ra, deca, magnitude, raRange, decaRange}}).pipe(
       tap((_) => console.log('fetched objet proche platform')),
       catchError(this.handleError<ObjetProche[]>('getObjetProchePlatform'))
     )

@@ -63,12 +63,16 @@ export class PixiMapComponent implements OnInit, OnDestroy {
       this.objetDistantService.getAttributes(
         this.position.ra,
         this.position.deca,
-        this.position.magnitude
+        this.position.magnitude,
+        this.position.raRange,
+        this.position.decaRange
       ),
       this.objetProcheService.getAttributes(
         this.position.ra,
         this.position.deca,
-        this.position.magnitude
+        this.position.magnitude,
+        this.position.raRange,
+        this.position.decaRange
       ),
     ]);
   }
@@ -158,10 +162,12 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     this.app.destroy();
   }
 
-  updatePosition(ra: number, deca: number, magnitude: number): void {
+  updatePosition(ra: number, deca: number, magnitude: number, raRange: number, decaRange:number): void {
     this.position.ra = ra;
     this.position.deca = deca;
     this.position.magnitude = magnitude;
+    this.position.raRange = raRange;
+    this.position.decaRange = decaRange;
     this.loadData()
   }
 }

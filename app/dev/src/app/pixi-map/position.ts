@@ -20,6 +20,9 @@ export class Position {
   private _raRangeMax: number = 20;
   private _raRangeMin: number = 2;
 
+  static raRangeDefault: number = 2;
+  static decaRangeDefault: number = 2; 
+
   private _minX: number = 0;
   private _maxX!: number;
 
