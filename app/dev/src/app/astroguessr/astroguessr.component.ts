@@ -6,7 +6,7 @@ import { PixiMapComponent } from '../pixi-map/pixi-map.component';
 import { Position } from '../pixi-map/position';
 import { AstroguessrService } from './astroguessr.service';
 import { Auth } from './auth.interface';
-import { ApiJeuStart } from './jeu.interface';
+import { ApiJeuStart, Jeu } from './jeu.interface';
 
 @Component({
   selector: 'app-astroguessr',
@@ -15,16 +15,31 @@ import { ApiJeuStart } from './jeu.interface';
 })
 export class AstroguessrComponent implements OnInit {
   cheatMode: boolean = false;
+  findLoading: boolean = false;
   isFinding: boolean = false;
   user: Auth = {pseudo: "", key: ""};
   jeuStart!: ApiJeuStart;
   gameStarted: boolean = false;
+  
+  // Table best 10 players
+  bestJeu: Jeu[] = [];
+  displayedColumns: string[] = ['pseudo', 'point'];
+  bestLoading: boolean = false;
 
   @ViewChild('pixiMap') pixiMap!: PixiMapComponent;
   @ViewChild('pixiMapTrouver') pixiMapTrouver!: PixiMapComponent;
   constructor(private astroguessrService: AstroguessrService) { }
 
   ngOnInit(): void {
+    this.loadingBestPlayers()
+  }
+
+  loadingBestPlayers(): void {
+    this.bestLoading = true;
+    this.astroguessrService.top10().subscribe((bj) => {
+      this.bestLoading = false;
+      this.bestJeu = bj
+    })
   }
 
   isBlank(value: string): Boolean {
@@ -109,6 +124,7 @@ export class AstroguessrComponent implements OnInit {
    */
   trouver(find: Find): void {
     this.shouldBeConnected().then(() => {
+      this.findLoading = true
       try {
         const ra: number = this.cheatMode ? Number(this.jeuStart.objet_distant.ra) : find.ra;
         const deca: number = this.cheatMode ? Number(this.jeuStart.objet_distant.deca) : find.deca;
@@ -116,6 +132,7 @@ export class AstroguessrComponent implements OnInit {
           this.user.key, this.jeuStart.id_jeu, ra, deca
         )
         .subscribe((c) => {
+          this.findLoading = false
           if(c.response == "INVALID") {
             Swal.fire({
               title: "Erreur",
@@ -132,10 +149,12 @@ export class AstroguessrComponent implements OnInit {
               this.user = {key: "", pseudo: ""}
               this.isFinding = false;
               this.cheatMode = false;
+              this.loadingBestPlayers()
             })
           }
         })
       } catch (e) {
+        this.findLoading = false
         console.error(e)
         Swal.fire({
           title: "Erreur",

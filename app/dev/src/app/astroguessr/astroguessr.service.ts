@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiAuth, Auth } from './auth.interface';
-import { ApiJeuStart, ApiJeuTrouver } from './jeu.interface';
+import { ApiJeuStart, ApiJeuTrouver, Jeu } from './jeu.interface';
 import { Parcour } from './parcour.interface';
 
 @Injectable({
@@ -69,6 +69,13 @@ export class AstroguessrService {
     return this.http.post<ApiJeuTrouver>(this.apiUrl+"/jeu/"+id_jeu+"/trouver", {ra, deca}, {headers: httpHeaders}).pipe(
       tap((_) => console.log('vérifier si on a trouver')),
       catchError(this.handleError<ApiJeuTrouver>('vérifier si on a trouver'))
+    );
+  }
+
+  top10(): Observable<Jeu[]> {
+    return this.http.get<Jeu[]>(this.apiUrl+"/jeu/best_10").pipe(
+      tap((_) => console.log('récupérer les 10 meilleurs')),
+      catchError(this.handleError<Jeu[]>('récupérer les 10 meilleurs'))
     );
   }
 }

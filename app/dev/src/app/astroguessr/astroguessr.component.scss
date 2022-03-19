@@ -18,6 +18,10 @@
     flex-direction: row;
 }
 
+table {
+    width: 100%;
+}
+
 .container-map-content-panel-find {
     width: 100%;
     background-color: mat.get-color-from-palette($my-accent, 500);
