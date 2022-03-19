@@ -2,6 +2,7 @@ import {
   Component,
   DoCheck,
   ElementRef,
+  Input,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -18,31 +19,31 @@ import { ObjetProche } from './objet-proche';
 import { Position } from './position';
 import { Output, EventEmitter } from '@angular/core';
 
-
 import {
   ObjetDistant as ODInterface,
   ObjetProche as OPInterface,
 } from '../objet/objet.interface';
 import { Map } from './map';
+import { Find } from './find';
+import { percentBetweenRange } from './util';
 
 @Component({
   selector: 'app-pixi-map',
   templateUrl: './pixi-map.component.html',
 })
-export class PixiMapComponent implements OnInit, OnDestroy {
+export class PixiMapComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() isFinding: boolean = false;
+  @Input() width: number = 600;
+  @Input() height: number = 600;
   @Output() eventPosition = new EventEmitter<Position>()
+  @Output() eventFind = new EventEmitter<Find>()
 
-  private sizeMapX: number = 600;
-  private sizeMapY: number = 600;
-  private areaX: number = 100;
-  private areaY: number = 100;
-
-  private position: Position = new Position(this.sizeMapX, this.sizeMapY);
+  private position: Position = new Position(this.width, this.height);
 
   private map: Map = new Map(this.position);
   private app: PIXI.Application = new PIXI.Application({
-    width: this.sizeMapX + this.areaX,
-    height: this.sizeMapY + this.areaY,
+    width: this.width,
+    height: this.height
   });
 
   private subscribeResearch!: Subscription;
@@ -54,6 +55,20 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     private el: ElementRef
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes["width"] || changes["height"]){
+      // Réinstentiation
+      this.position.maxX = this.width
+      this.position.maxY = this.height
+      this.app.view.width = this.width
+      this.app.view.height = this.height
+    }
+
+    if(changes['isFinding']){
+      this.app.view.style.cursor = this.isFinding ? "crosshair" : "initial";
+    }
+  }
+
   /**
    *
    * @returns ForkJoin de rxjs permet de faire les deux requêtes simultanéments
@@ -63,12 +78,16 @@ export class PixiMapComponent implements OnInit, OnDestroy {
       this.objetDistantService.getAttributes(
         this.position.ra,
         this.position.deca,
-        this.position.magnitude
+        this.position.magnitude,
+        this.position.raRange,
+        this.position.decaRange
       ),
       this.objetProcheService.getAttributes(
         this.position.ra,
         this.position.deca,
-        this.position.magnitude
+        this.position.magnitude,
+        this.position.raRange,
+        this.position.decaRange
       ),
     ]);
   }
@@ -81,7 +100,11 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     this.eventPosition.emit(this.position);
 
     // Si on a pas finit de charger les datas précédents, on cancel la requête pour en faire une nouvelle
-    if (this.subscribeResearch) this.subscribeResearch.unsubscribe();
+    if (this.subscribeResearch){
+      // console.log(this.subscribeResearch)
+      // console.log(this.position)
+      this.subscribeResearch.unsubscribe(); 
+    }
 
     this.subscribeResearch = this.makeResearch().subscribe((d) => {
       let containers: PIXI.Container[] = [];
@@ -129,39 +152,47 @@ export class PixiMapComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
+  getPosition(): Position {
+    return this.position
+  }
+
   ngAfterViewInit(): void {
     this.renderer2.appendChild(this.el.nativeElement, this.app.view);
   }
 
   ngOnInit(): void {
     this.app.stage.addChild(this.map);
-
-    /** TEST */
-    const t = new PIXI.Text(String(this.position.ra));
-    t.style.fill = 'white';
-    t.x = 350;
-    t.y = 0;
-    this.app.stage.addChild(t);
-
-    let obj = new PIXI.Graphics();
-    obj.lineStyle(1, 0xffffff).moveTo(50, 50).lineTo(650, 50);
-
-    this.app.stage.addChild(obj);
-    /** FIN TEST */
-
-    this.map.x = this.areaX / 2;
-    this.map.y = this.areaY / 2;
+    this.app.view.onclick = (ev) => this.onClickFinding(ev)
     this.loadData();
+  }
+
+  onClickFinding(event: MouseEvent) {
+    if(this.isFinding){
+      // RA
+      const raPercent = percentBetweenRange(0, this.height, event.clientY)
+      const raMin = this.position.ra - (this.position.raRange / 2)
+      const raFind = raMin + ((raPercent / 100) * this.position.raRange)
+
+      // DECA
+      const decaPercent = percentBetweenRange(0, this.width, event.clientX)
+      const decaMin = this.position.deca - (this.position.decaRange / 2)
+      const decaFind = decaMin + ((decaPercent / 100) * this.position.decaRange)
+
+      const find: Find = {ra: raFind, deca: decaFind}
+      this.eventFind.emit(find);
+    }
   }
 
   ngOnDestroy(): void {
     this.app.destroy();
   }
 
-  updatePosition(ra: number, deca: number, magnitude: number): void {
+  updatePosition(ra: number, deca: number, magnitude: number, raRange: number, decaRange:number): void {
     this.position.ra = ra;
     this.position.deca = deca;
     this.position.magnitude = magnitude;
+    this.position.raRange = raRange;
+    this.position.decaRange = decaRange;
     this.loadData()
   }
 }

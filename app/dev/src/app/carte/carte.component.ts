@@ -37,11 +37,11 @@ export class CarteComponent implements OnInit {
     const magnitude = Number(queryParams?.['magnitude'])
 
     if(ra !== NaN && deca !== NaN && magnitude !== NaN) 
-      this.pixiMap.updatePosition(ra, deca, magnitude)
+      this.pixiMap.updatePosition(ra, deca, magnitude, Position.raRangeDefault, Position.decaRangeDefault)
   }
 
   onFiltrer() {
-    this.pixiMap.updatePosition(this.ra, this.dec, this.magnitude)
+    this.pixiMap.updatePosition(this.ra, this.dec, this.magnitude, this.raRange, this.decaRange)
   }
 
   

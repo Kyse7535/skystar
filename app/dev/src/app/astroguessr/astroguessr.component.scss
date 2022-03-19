@@ -13,6 +13,28 @@
     width: 85%;
 }
 
+.container-map-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.mat-divider {
+    background-color: white;
+    left: auto !important;
+    position: relative !important;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+.container-map-content-panel-find {
+    width: 100%;
+    background-color: mat.get-color-from-palette($my-accent, 500);
+}
+
 .mat-card {
     background-color: mat.get-color-from-palette($my-accent, 500);
     border: 1px solid white;
@@ -21,10 +43,17 @@
     color: white;
 }
 
+.mat-card-subtitle {
+    color: white;
+}
+
 .mat-expansion-panel-header {
    position: relative;
 }
 
+.alert {
+    margin-bottom: 20px;
+}
 
 .mat-card-actions a, .mat-card-actions button {
     background-color: mat.get-color-from-palette($my-optionnal, 500);

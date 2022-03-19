@@ -24,7 +24,7 @@
               </mat-grid-tile>
               <mat-grid-tile>
                 <mat-form-field appearance="fill">
-                  <mat-label>V Magnitude</mat-label>
+                  <mat-label>Magnitude</mat-label>
                   <input  [(ngModel)]="magnitude" name="magnitude" type="number" matInput />
                 </mat-form-field>
               </mat-grid-tile>
@@ -34,15 +34,15 @@
               <mat-grid-tile>
                 <mat-label>Range RA </mat-label>
                 <mat-slider thumbLabel 
-                     [min]="raRangemin" step="1" [max]="raRangemax" [value]="raRange"  > </mat-slider>
+                    [(ngModel)]="raRange" [min]="raRangemin" step="1" [max]="raRangemax"   > </mat-slider>
               </mat-grid-tile>
             </mat-grid-list>
             <mat-divider></mat-divider>  
             <mat-grid-list cols="1" rowHeight="100">
               <mat-grid-tile>
                 <mat-label>Range DECA </mat-label>
-                <mat-slider thumbLabel
-                 step= "1" [min]="decaRangemin" [max]= "decaRangemax"  [value]="decaRange"> </mat-slider>
+                <mat-slider thumbLabel [(ngModel)]="decaRange"
+                 step= "1" [min]="decaRangemin" [max]= "decaRangemax"  > </mat-slider>
               </mat-grid-tile>
             </mat-grid-list>
             <mat-card-actions>

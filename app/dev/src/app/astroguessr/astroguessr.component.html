@@ -1,18 +1,85 @@
 <section>
     <div class="container">
-        <div class="container-content">
+        <div class="container-content" *ngIf="!gameStarted">
             <mat-card>
                 <mat-card-title> Démarrer une nouvelle partie </mat-card-title>
                 <mat-card-content>
                     <mat-form-field appearance="fill">
                         <mat-label>Entrer votre pseudo </mat-label>
-                        <input [(ngModel)]="pseudo" name="pseudo" type="number" matInput />
+                        <input [(ngModel)]="user.pseudo" name="pseudo" type="text" matInput />
                     </mat-form-field>
                     <mat-card-actions>
-                        <button mat-raised-button type="submit">  Démarrer </button>
+                        <button mat-raised-button (click)="login()">  Démarrer </button>
                     </mat-card-actions>
                 </mat-card-content>    
-            </mat-card>    
+            </mat-card>
+            
+            <mat-card style="margin-top: 50px;">
+                <mat-card-title>Top 10 meilleurs joueurs !</mat-card-title>
+                <mat-card-content>
+                    <div class="alert">
+                        <app-alert icon="info" color="info">Le but du jeu est d'avoir le moins de points possible !</app-alert>
+                    </div>
+                    <div class="alert">
+                        <app-alert icon="info" color="info">Plus vous êtes rapides, et moins vous aurez de points ! Enfin, il faut tout de même réussir à trouver l'objet distant rechercher !</app-alert>
+                    </div>
+                    <table mat-table [dataSource]="bestJeu" class="mat-elevation-z8">
+                        <mat-progress-bar *ngIf="bestLoading" mode="indeterminate"></mat-progress-bar>
+
+                        <ng-container matColumnDef="pseudo">
+                            <th mat-header-cell *matHeaderCellDef> Pseudo </th>
+                            <td mat-cell *matCellDef="let jeu"> {{ jeu.pseudo }} </td>
+                          </ng-container>
+
+                        <ng-container matColumnDef="point">
+                          <th mat-header-cell *matHeaderCellDef> Points </th>
+                          <td mat-cell *matCellDef="let jeu"> {{ jeu.point }} </td>
+                        </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>                      
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="container-map" *ngIf="gameStarted">
+        <div class="container-map-content">
+            <app-pixi-map #pixiMap [isFinding]="isFinding" (eventFind)="trouver($event)"></app-pixi-map>
+            <div>
+                <mat-card class="example-card">
+                    <mat-card-title>Trouver sa position</mat-card-title>
+                    <mat-card-subtitle>Amusez-vous</mat-card-subtitle>
+                    <mat-card-content>
+                        <app-pixi-map #pixiMapTrouver [width]="200" [height]="200"></app-pixi-map>
+                    </mat-card-content>
+                    <mat-divider inset></mat-divider>
+                    <mat-progress-bar *ngIf="findLoading" mode="indeterminate"></mat-progress-bar>
+                    <mat-card-actions>
+                        <div class="alert" *ngIf="isFinding">
+                            <app-alert icon="info" color="info">Cliquer sur la carte, si vous pensez avoir trouver l'objet distant.</app-alert>
+                        </div>
+                        <button mat-button [style]="isFinding ? 'opacity: 0.9;': 'opacity: 1;'" (click)="isFinding = !isFinding">{{ isFinding ? 'Annuler': 'Valider' }}</button>
+                    </mat-card-actions>
+                    <mat-card-footer>
+                        <mat-checkbox style="margin-left:20px;" [(ngModel)]="cheatMode">Utiliser le cheat mode</mat-checkbox>
+                    </mat-card-footer>
+                  </mat-card>
+            </div>
+        </div>
+        <div>
+        <button mat-raised-button color="accent" (click)="moveBottom()">
+            <mat-icon>expand_more</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" (click)="moveLeft()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" (click)="moveTop()">
+            <mat-icon>expand_less</mat-icon>
+          </button>
+          <button mat-raised-button color="accent" (click)="moveRight()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
         </div>
     </div>
 </section> 

@@ -58,6 +58,16 @@
    // margin-top: 10px;
 }
 
+.mat-slider {
+   border-radius: 15px;
+   border: solid 2px rgb(88, 85, 85);
+   background-color: burlywood;
+}
+
+.mat-slider-wrapper{
+    background-color: gray;
+}
+
 
 ::ng-deep .mat-form-field {
     width: 100%;
@@ -101,3 +111,4 @@
     }
 
 }
+

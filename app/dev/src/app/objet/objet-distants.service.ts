@@ -44,8 +44,9 @@ export class ObjetDistantService {
     );
   }
 
-  getAttributes(ra: number, deca: number, magnitude: number): Observable<ObjetDistant[]> {
-    return this.http.get<ObjetDistant[]>(`${environment.apiUrl}/api/map/objet_distants`, {params: {ra, deca, magnitude}}).pipe(
+  getAttributes(ra: number, deca: number, magnitude: number, raRange: number, decaRange: number): Observable<ObjetDistant[]> {
+    return this.http.get<ObjetDistant[]>(`${environment.apiUrl}/api/map/objet_distants`, 
+    {params: {ra, deca, magnitude, raRange, decaRange}}).pipe(
       tap((_) => console.log('fetched objet distant platform')),
       catchError(this.handleError<ObjetDistant[]>('getObjetDistantPlatform'))
     )
