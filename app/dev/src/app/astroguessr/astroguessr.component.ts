@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { catchError } from 'rxjs';
 import Swal from 'sweetalert2';
+import { Find } from '../pixi-map/find';
 import { PixiMapComponent } from '../pixi-map/pixi-map.component';
 import { Position } from '../pixi-map/position';
 import { AstroguessrService } from './astroguessr.service';
@@ -12,11 +14,14 @@ import { ApiJeuStart } from './jeu.interface';
   styleUrls: ['./astroguessr.component.scss']
 })
 export class AstroguessrComponent implements OnInit {
+  cheatMode: boolean = false;
+  isFinding: boolean = false;
   user: Auth = {pseudo: "", key: ""};
   jeuStart!: ApiJeuStart;
   gameStarted: boolean = false;
 
-  @ViewChild(PixiMapComponent) pixiMap!: PixiMapComponent;
+  @ViewChild('pixiMap') pixiMap!: PixiMapComponent;
+  @ViewChild('pixiMapTrouver') pixiMapTrouver!: PixiMapComponent;
   constructor(private astroguessrService: AstroguessrService) { }
 
   ngOnInit(): void {
@@ -76,6 +81,13 @@ export class AstroguessrComponent implements OnInit {
               Number(this.jeuStart.first_point.magnitude), 
               Position.raRangeDefault, 
               Position.decaRangeDefault)
+            this.pixiMapTrouver.updatePosition(
+              Number(this.jeuStart.objet_distant.ra),
+              Number(this.jeuStart.objet_distant.deca),
+              Number(this.jeuStart.objet_distant.magnitude) - 5,
+              Position.raRangeDefault,
+              Position.decaRangeDefault
+            )
           }, 0)
         })
     })
@@ -95,11 +107,42 @@ export class AstroguessrComponent implements OnInit {
   /**
    * Proposer une solution
    */
-  trouver(ra: number, deca: number): void {
+  trouver(find: Find): void {
     this.shouldBeConnected().then(() => {
-      this.astroguessrService.trouver(
-        this.user.key, this.jeuStart.id_jeu, ra, deca
-      )
+      try {
+        const ra: number = this.cheatMode ? Number(this.jeuStart.objet_distant.ra) : find.ra;
+        const deca: number = this.cheatMode ? Number(this.jeuStart.objet_distant.deca) : find.deca;
+        this.astroguessrService.trouver(
+          this.user.key, this.jeuStart.id_jeu, ra, deca
+        )
+        .subscribe((c) => {
+          if(c.response == "INVALID") {
+            Swal.fire({
+              title: "Erreur",
+              text: "Vous vous êtes tromper ! Continuer !",
+              icon: "error"
+            })
+          } else if (c.response == "VALID") {
+            Swal.fire({
+              title: "Congrats !",
+              text: "Vous avez réussi",
+              icon: "success",
+            }).then(() => {
+              this.gameStarted = false;
+              this.user = {key: "", pseudo: ""}
+              this.isFinding = false;
+              this.cheatMode = false;
+            })
+          }
+        })
+      } catch (e) {
+        console.error(e)
+        Swal.fire({
+          title: "Erreur",
+          text: "Vous vous êtes tromper ! Continuer !",
+          icon: "error"
+        })
+      }
     })
   }
 

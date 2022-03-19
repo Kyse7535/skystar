@@ -13,6 +13,16 @@
     width: 85%;
 }
 
+.container-map-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.container-map-content-panel-find {
+    width: 100%;
+    background-color: mat.get-color-from-palette($my-accent, 500);
+}
+
 .mat-card {
     background-color: mat.get-color-from-palette($my-accent, 500);
     border: 1px solid white;

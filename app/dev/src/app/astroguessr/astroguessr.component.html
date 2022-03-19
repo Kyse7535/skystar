@@ -16,8 +16,25 @@
         </div>
     </div>
     <div class="container-map" *ngIf="gameStarted">
-        <div>
-            <app-pixi-map #pixiMap></app-pixi-map>
+        <div class="container-map-content">
+            <app-pixi-map #pixiMap [isFinding]="isFinding" (eventFind)="trouver($event)"></app-pixi-map>
+            <div>
+                <mat-card class="example-card">
+                    <mat-card-title>Trouver sa position</mat-card-title>
+                    <mat-card-subtitle>Amusez-vous</mat-card-subtitle>
+                    <mat-card-content>
+                        <app-pixi-map #pixiMapTrouver [width]="200" [height]="200"></app-pixi-map>
+                    </mat-card-content>
+                    <mat-divider inset></mat-divider>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    <mat-card-actions>
+                        <button mat-button [style]="isFinding ? 'opacity: 0.9;': 'opacity: 1;'" (click)="isFinding = !isFinding">{{ isFinding ? 'Annuler': 'Valider' }}</button>
+                    </mat-card-actions>
+                    <mat-card-footer>
+                        <mat-checkbox style="margin-left:20px;" [(ngModel)]="cheatMode">Utiliser le cheat mode</mat-checkbox>
+                    </mat-card-footer>
+                  </mat-card>
+            </div>
         </div>
         <div>
         <button mat-raised-button color="accent" (click)="moveBottom()">
