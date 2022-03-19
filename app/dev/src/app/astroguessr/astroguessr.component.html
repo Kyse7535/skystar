@@ -17,6 +17,12 @@
             <mat-card style="margin-top: 50px;">
                 <mat-card-title>Top 10 meilleurs joueurs !</mat-card-title>
                 <mat-card-content>
+                    <div class="alert">
+                        <app-alert icon="info" color="info">Le but du jeu est d'avoir le moins de points possible !</app-alert>
+                    </div>
+                    <div class="alert">
+                        <app-alert icon="info" color="info">Plus vous êtes rapides, et moins vous aurez de points ! Enfin, il faut tout de même réussir à trouver l'objet distant rechercher !</app-alert>
+                    </div>
                     <table mat-table [dataSource]="bestJeu" class="mat-elevation-z8">
                         <mat-progress-bar *ngIf="bestLoading" mode="indeterminate"></mat-progress-bar>
 
@@ -50,6 +56,9 @@
                     <mat-divider inset></mat-divider>
                     <mat-progress-bar *ngIf="findLoading" mode="indeterminate"></mat-progress-bar>
                     <mat-card-actions>
+                        <div class="alert" *ngIf="isFinding">
+                            <app-alert icon="info" color="info">Cliquer sur la carte, si vous pensez avoir trouver l'objet distant.</app-alert>
+                        </div>
                         <button mat-button [style]="isFinding ? 'opacity: 0.9;': 'opacity: 1;'" (click)="isFinding = !isFinding">{{ isFinding ? 'Annuler': 'Valider' }}</button>
                     </mat-card-actions>
                     <mat-card-footer>
