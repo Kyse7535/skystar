@@ -1,141 +1,118 @@
--- SQLINES DEMO *** sktop version to convert large SQL scripts,
--- SQLINES DEMO *** ny issues with Online conversion.
+-- Adminer 4.8.1 PostgreSQL 14.2 dump
 
--- SQLINES DEMO *** act us at support@sqlines.com
+DROP TABLE IF EXISTS "constellation";
+CREATE TABLE "public"."constellation" (
+    "id_constellation" integer NOT NULL,
+    "latin_name" character(50),
+    "observation_saison" character(100),
+    "etoile_principale" character(40),
+    "ra" numeric(10,5),
+    "deca" numeric(10,5),
+    "taille" numeric(15,5),
+    "created" timestamp(0),
+    "updated" timestamp(0),
+    CONSTRAINT "constellation_pkey" PRIMARY KEY ("id_constellation")
+) WITH (oids = false);
 
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE CONSTELLATION_seq;
+COMMENT ON COLUMN "public"."constellation"."created" IS '(DC2Type:datetime_immutable)';
 
-CREATE TABLE IF NOT EXISTS CONSTELLATION
-(
-ID_CONSTELLATION INTEGER NOT NULL DEFAULT NEXTVAL ('CONSTELLATION_seq') ,
-LATIN_NAME CHAR(50) NULL ,
-OBSERVATION_SAISON CHAR(100) NULL ,
-ETOILE_PRINCIPALE CHAR(40) NULL ,
-RA DECIMAL(10,5) NULL ,
-DECA DECIMAL(10,5) NULL ,
-TAILLE DECIMAL(15,5) NULL ,
-CREATED TIMESTAMP NULL ,
-UPDATED TIMESTAMP NULL
-, PRIMARY KEY (ID_CONSTELLATION)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE JEU_seq;
+COMMENT ON COLUMN "public"."constellation"."updated" IS '(DC2Type:datetime_immutable)';
 
-CREATE TABLE IF NOT EXISTS JEU
-(
-ID_JEU INTEGER NOT NULL DEFAULT NEXTVAL ('JEU_seq'),
-ID_CONSTELLATION INTEGER NULL ,
-ID_OBJET_DISTANT INTEGER NULL ,
-PSEUDO CHAR(20) NULL ,
-TROUVER SMALLINT NULL ,
-DUREE TIMESTAMP NULL ,
-DATE_CREATION TIMESTAMP NULL ,
-CREATED TIMESTAMP NULL ,
-UPDATED TIMESTAMP NULL
-, PRIMARY KEY (ID_JEU)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_JEU_CONSTELLATION
-ON JEU (ID_CONSTELLATION ASC);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_JEU_OBJET_DISTANT
-ON JEU (ID_OBJET_DISTANT ASC);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE OBJET_DISTANT_seq;
 
-CREATE TABLE IF NOT EXISTS OBJET_DISTANT
-(
-ID_OBJET_DISTANT INTEGER NOT NULL DEFAULT NEXTVAL ('OBJET_DISTANT_seq') ,
-RA DECIMAL(10,5) NULL ,
-DECA DECIMAL(10,5) NULL ,
-MAGNITUDE DECIMAL(10,3) NULL ,
-RA_RADIANS DECIMAL(10,5) NULL ,
-DEC_RADIANS DECIMAL(10,5) NULL ,
-TYPE CHAR(50) NULL ,
-CREATED TIMESTAMP NULL ,
-UPDATED TIMESTAMP NULL
-, PRIMARY KEY (ID_OBJET_DISTANT)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE OBJET_PROCHE_seq;
+DROP TABLE IF EXISTS "determiner";
+CREATE TABLE "public"."determiner" (
+    "id_objet_proche" integer NOT NULL,
+    "id_constellation" integer NOT NULL,
+    CONSTRAINT "determiner_pkey" PRIMARY KEY ("id_objet_proche", "id_constellation")
+) WITH (oids = false);
 
-CREATE TABLE IF NOT EXISTS OBJET_PROCHE
-(
-ID_OBJET_PROCHE INTEGER NOT NULL DEFAULT NEXTVAL ('OBJET_PROCHE_seq') ,
-NOM CHAR(32) NULL ,
-MAGNITUDE DECIMAL(10,5) NULL ,
-RA DECIMAL(10,5) NULL ,
-DECA DECIMAL(10,5) NULL ,
-TYPE CHAR(32) NULL ,
-DATE_APPROBATION CHAR(32) NULL
-, PRIMARY KEY (ID_OBJET_PROCHE)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE PARCOURS_seq;
+CREATE INDEX "idx_59483ad816c461c1" ON "public"."determiner" USING btree ("id_objet_proche");
 
-CREATE TABLE IF NOT EXISTS PARCOURS
-(
-ID_PARCOURS INTEGER NOT NULL DEFAULT NEXTVAL ('PARCOURS_seq') ,
-ID_JEU INTEGER NOT NULL ,
-RA DECIMAL(10,5) NULL ,
-DECA DECIMAL(10,5) NULL ,
-MAGNITUDE DECIMAL(10,5) NULL ,
-CREATED TIMESTAMP NULL ,
-UPDATED TIMESTAMP NULL
-, PRIMARY KEY (ID_PARCOURS)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_PARCOURS_JEU
-ON PARCOURS (ID_JEU ASC);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE GROUPER_seq;
+CREATE INDEX "idx_59483ad8e7d26b3" ON "public"."determiner" USING btree ("id_constellation");
 
-CREATE TABLE IF NOT EXISTS GROUPER
-(
-ID_OBJET_DISTANT INTEGER NOT NULL DEFAULT NEXTVAL ('GROUPER_seq') ,
-ID_CONSTELLATION INTEGER NOT NULL
-, PRIMARY KEY (ID_OBJET_DISTANT,ID_CONSTELLATION)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_GROUPER_OBJET_DISTANT
-ON GROUPER (ID_OBJET_DISTANT ASC);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_GROUPER_CONSTELLATION
-ON GROUPER (ID_CONSTELLATION ASC);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE SEQUENCE DETERMINER_seq;
 
-CREATE TABLE IF NOT EXISTS DETERMINER
-(
-ID_OBJET_PROCHE INTEGER NOT NULL DEFAULT NEXTVAL ('DETERMINER_seq') ,
-ID_CONSTELLATION INTEGER NOT NULL
-, PRIMARY KEY (ID_OBJET_PROCHE,ID_CONSTELLATION)
-);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_DETERMINER_OBJET_PROCHE
-ON DETERMINER (ID_OBJET_PROCHE ASC);
--- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE INDEX I_FK_DETERMINER_CONSTELLATION
-ON DETERMINER (ID_CONSTELLATION ASC);
-ALTER TABLE JEU
-ADD CONSTRAINT FK_JEU_CONSTELLATION FOREIGN KEY (ID_CONSTELLATION)
-REFERENCES CONSTELLATION (ID_CONSTELLATION) ;
-ALTER TABLE JEU
-ADD CONSTRAINT FK_JEU_OBJET_DISTANT FOREIGN KEY (ID_OBJET_DISTANT)
-REFERENCES OBJET_DISTANT (ID_OBJET_DISTANT) ;
-ALTER TABLE PARCOURS
-ADD CONSTRAINT FK_PARCOURS_JEU FOREIGN KEY (ID_JEU)
-REFERENCES JEU (ID_JEU) ;
-ALTER TABLE GROUPER
-ADD CONSTRAINT FK_GROUPER_OBJET_DISTANT FOREIGN KEY (ID_OBJET_DISTANT)
-REFERENCES OBJET_DISTANT (ID_OBJET_DISTANT) ;
-ALTER TABLE GROUPER
-ADD CONSTRAINT FK_GROUPER_CONSTELLATION FOREIGN KEY (ID_CONSTELLATION)
-REFERENCES CONSTELLATION (ID_CONSTELLATION) ;
-ALTER TABLE DETERMINER
-ADD CONSTRAINT FK_DETERMINER_OBJET_PROCHE FOREIGN KEY (ID_OBJET_PROCHE)
-REFERENCES OBJET_PROCHE (ID_OBJET_PROCHE) ;
-ALTER TABLE DETERMINER 
-ADD CONSTRAINT FK_DETERMINER_CONSTELLATION FOREIGN KEY (ID_CONSTELLATION)
-REFERENCES CONSTELLATION (ID_CONSTELLATION) ;
+DROP TABLE IF EXISTS "grouper";
+CREATE TABLE "public"."grouper" (
+    "id_objet_distant" integer NOT NULL,
+    "id_constellation" integer NOT NULL,
+    CONSTRAINT "grouper_pkey" PRIMARY KEY ("id_objet_distant", "id_constellation")
+) WITH (oids = false);
+
+CREATE INDEX "idx_2064564f1764d18b" ON "public"."grouper" USING btree ("id_objet_distant");
+
+CREATE INDEX "idx_2064564fe7d26b3" ON "public"."grouper" USING btree ("id_constellation");
+
+
+DROP TABLE IF EXISTS "jeu";
+CREATE TABLE "public"."jeu" (
+    "id_jeu" integer NOT NULL,
+    "id_constellation" integer,
+    "id_objet_distant" integer,
+    "pseudo" character(20),
+    "trouver" smallint,
+    "duree" timestamp,
+    "date_creation" timestamp,
+    "created" timestamp,
+    "updated" timestamp,
+    "point" bigint,
+    CONSTRAINT "jeu_pkey" PRIMARY KEY ("id_jeu")
+) WITH (oids = false);
+
+CREATE INDEX "i_fk_jeu_constellation" ON "public"."jeu" USING btree ("id_constellation");
+
+CREATE INDEX "i_fk_jeu_objet_distant" ON "public"."jeu" USING btree ("id_objet_distant");
+
+
+DROP TABLE IF EXISTS "objet_distant";
+CREATE TABLE "public"."objet_distant" (
+    "id_objet_distant" integer NOT NULL,
+    "ra" numeric(10,5),
+    "deca" numeric(10,5),
+    "magnitude" numeric(10,3),
+    "ra_radians" numeric(10,5),
+    "dec_radians" numeric(10,5),
+    "type" character(50),
+    "created" timestamp,
+    "updated" timestamp,
+    CONSTRAINT "objet_distant_pkey" PRIMARY KEY ("id_objet_distant")
+) WITH (oids = false);
+
+
+DROP TABLE IF EXISTS "objet_proche";
+CREATE TABLE "public"."objet_proche" (
+    "id_objet_proche" integer NOT NULL,
+    "nom" character(32),
+    "magnitude" numeric(10,5),
+    "ra" numeric(10,5),
+    "deca" numeric(10,5),
+    "type" character(32),
+    "date_approbation" character(32),
+    CONSTRAINT "objet_proche_pkey" PRIMARY KEY ("id_objet_proche")
+) WITH (oids = false);
+
+
+DROP TABLE IF EXISTS "parcours";
+CREATE TABLE "public"."parcours" (
+    "id_parcours" integer NOT NULL,
+    "id_jeu" integer,
+    "ra" numeric(10,5),
+    "deca" numeric(10,5),
+    "magnitude" numeric(10,5),
+    "created" timestamp,
+    "updated" timestamp,
+    CONSTRAINT "parcours_pkey" PRIMARY KEY ("id_parcours")
+) WITH (oids = false);
+
+CREATE INDEX "i_fk_parcours_jeu" ON "public"."parcours" USING btree ("id_jeu");
+
+
+ALTER TABLE ONLY "public"."determiner" ADD CONSTRAINT "fk_determiner_constellation" FOREIGN KEY (id_constellation) REFERENCES constellation(id_constellation) NOT DEFERRABLE;
+ALTER TABLE ONLY "public"."determiner" ADD CONSTRAINT "fk_determiner_objet_proche" FOREIGN KEY (id_objet_proche) REFERENCES objet_proche(id_objet_proche) NOT DEFERRABLE;
+
+ALTER TABLE ONLY "public"."grouper" ADD CONSTRAINT "fk_grouper_constellation" FOREIGN KEY (id_constellation) REFERENCES constellation(id_constellation) NOT DEFERRABLE;
+ALTER TABLE ONLY "public"."grouper" ADD CONSTRAINT "fk_grouper_objet_distant" FOREIGN KEY (id_objet_distant) REFERENCES objet_distant(id_objet_distant) NOT DEFERRABLE;
+
+ALTER TABLE ONLY "public"."jeu" ADD CONSTRAINT "fk_jeu_constellation" FOREIGN KEY (id_constellation) REFERENCES constellation(id_constellation) NOT DEFERRABLE;
+ALTER TABLE ONLY "public"."jeu" ADD CONSTRAINT "fk_jeu_objet_distant" FOREIGN KEY (id_objet_distant) REFERENCES objet_distant(id_objet_distant) NOT DEFERRABLE;
+
+ALTER TABLE ONLY "public"."parcours" ADD CONSTRAINT "fk_parcours_jeu" FOREIGN KEY (id_jeu) REFERENCES jeu(id_jeu) NOT DEFERRABLE;
