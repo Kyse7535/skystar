@@ -3,7 +3,7 @@ services:
   api:
     container_name: api_skystar
     build: ./api
-    links:
+    depends_on:
       - db
     ports:
       - ${API_PORT_LOCAL}:8000
@@ -11,19 +11,17 @@ services:
       - /app/var
       - /app/vendor
       - ./api/dev:/app
-  # db:
-  #   container_name: db_skystar
-  #   build: ./db
-  #   restart: always
-  #   expose:
-  #     - "3306"
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - ./db/data:/var/lib/mysql
+  # # Décommenter pour démarrer le service
+  # # Ce service est une instance de python avec les bons requirements pour utiliser le script qui génère la base de donnée
+  # python-db-script:
+  #   build: ./python-db-script
+  #   depends_on:
+  #     - db
+  #   tty: true
   #   environment:
-  #     MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
-  #     MARIADB_ROOT_HOST: "%"
+  #     - DB_USER=user
+  #     - DB_PASSWORD=pswd
+  #     - DB_DATABASE=skystar
   db:
     build: ./db
     restart: always
@@ -36,7 +34,7 @@ services:
   adminer:
     image: adminer
     restart: always
-    links:
+    depends_on:
       - db
     ports:
       - ${ADMINER_PORT_LOCAL}:8080

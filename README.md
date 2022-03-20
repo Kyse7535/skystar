@@ -23,12 +23,15 @@ ADMINER_PORT_LOCAL=8080
 
 ### Dans le cas ou vous avez besoin de générer le script DB
 
-_le docker de la base de donnée doit être lancée_
+Ce script va générer dans la base de donnée, toutes les données à partir des données JSon récupérer sur datastro.
 
-_vous devez avoir pip d'installer sur votre machine, je n'es pas encore de Docker pour cette partie_
+_cela nécessite que la base de donnée soit créer_
 
-- cd db/scripts
-- source venv/bin/activate activate
+_la vitesse d'éxécution dépend de la vitesse de la machine, peut durer un certain temps_
+
+- Décommenter dans `docker-compose.yml` le service python-db-script
+- docker-compose up -d
+- Accéder au container en bash
 - ./generate-insert.py
 
 ### Pour démarrer le projet symfony
