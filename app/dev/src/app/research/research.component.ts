@@ -76,10 +76,17 @@ export class ResearchComponent implements OnInit {
     }
   }
 
+  // https://www.delftstack.com/howto/javascript/check-if-string-is-number-javascript/
+  isNumeric(value: string): Boolean {
+    return /^-?\d+$/.test(value);
+  }
+
   // Vérification si RA, DEC et Magnitude sont renseigner, ou aucun.
   verifFilters(): Boolean {
     if(this.ra || this.dec || this.magnitude) 
-      if(!this.ra || !this.dec || !this.magnitude)
+      if(!this.isNumeric(this.ra) 
+        || !this.isNumeric(this.dec) 
+        || !this.isNumeric(this.magnitude))
         return false;
     return true;
   }

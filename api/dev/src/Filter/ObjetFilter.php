@@ -26,7 +26,7 @@ class ObjetFilter implements FilterInterface
         if (is_numeric($magnitude)) {
             $context[self::MAGNITUDE_FILTER_CONTEXT] = $magnitude;
         }
-        if (is_numeric($constellation)) {
+        if (is_array($constellation)) {
             $context[self::CONSTELLATION_FILTER_CONTEXT] = $constellation;
         }
     }
