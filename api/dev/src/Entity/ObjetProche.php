@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
-use App\Filter\ResearchObjetProcheFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use App\Filter\ObjetProcheFilter;
+
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * ObjetProche
@@ -17,9 +19,11 @@ use App\Filter\ResearchObjetProcheFilter;
  * @ORM\Entity
  */
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']],
+    itemOperations: ['get'],
+    collectionOperations: ['get'],
 )]
-#[ApiFilter(ResearchObjetProcheFilter::class)]
+#[ApiFilter(ObjetProcheFilter::class)]
 class ObjetProche
 {
     /**
@@ -30,6 +34,8 @@ class ObjetProche
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="objet_proche_id_objet_proche_seq", allocationSize=1, initialValue=1)
      */
+    #[Groups(['read:collection'])]
+    #[ApiProperty(identifier: true)]
     private $idObjetProche;
 
     /**
@@ -93,6 +99,7 @@ class ObjetProche
      *   }
      * )
      */
+    #[Groups(['read:collection'])]
     private $idConstellation;
 
     /**

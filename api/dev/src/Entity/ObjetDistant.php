@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ObjetDistantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Filter\ObjetDistantFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
-use App\Filter\ResearchObjetDistantFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * ObjetDistant
@@ -20,9 +19,11 @@ use App\Filter\ResearchObjetDistantFilter;
  */
 
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']]
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']],
+    itemOperations: ['get'],
+    collectionOperations: ['get'],
 )]
-#[ApiFilter(ResearchObjetDistantFilter::class)]
+#[ApiFilter(ObjetDistantFilter::class)]
 class ObjetDistant
 {
     /**
@@ -35,6 +36,7 @@ class ObjetDistant
      */
 
     #[Groups(['read:collection'])]
+    #[ApiProperty(identifier: true)]
     private $idObjetDistant;
 
     /**

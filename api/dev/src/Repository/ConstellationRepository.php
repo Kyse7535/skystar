@@ -19,5 +19,30 @@ class ConstellationRepository extends ServiceEntityRepository
         parent::__construct($registry, Constellation::class);
     }
 
+    public function findFithFirst()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.idConstellation <= 16');
+        $query = $qb->getQuery();
 
+        return $query->execute();
+    }
+
+    public function findAll()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
+    public function findOneByName(string $latinName)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.latinName = :latinName ')
+            ->setParameter('latinName', "%$latinName%")
+            ->getQuery()
+            ->execute();
+        return $qb;
+    }
 }
