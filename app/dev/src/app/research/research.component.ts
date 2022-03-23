@@ -129,6 +129,9 @@ export class ResearchComponent implements OnInit {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
+    // Lors du clique sur le bouton, et seulement a ce moment, on reinit le paginator a la page 0
+    this.paginator.firstPage()
+    
     // On applique un écouteur sur le trie et sur la pagination
     this.merge = merge(this.sort.sortChange, this.paginator.page)
       .pipe(
