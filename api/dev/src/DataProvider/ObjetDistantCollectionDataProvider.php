@@ -4,21 +4,30 @@ namespace App\DataProvider;
 
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use App\Entity\ObjetDistant;
-use App\Filter\ObjetDistantFilter;
+use App\Filter\ObjetFilter;
+use ApiPlatform\Core\DataProvider\Pagination;
 use App\Repository\ObjetDistantRepository;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use Doctrine\ORM\QueryBuilder;
+use App\Service\ObjetDistantHelper;
 
 final class ObjetDistantCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
 RestrictedDataProviderInterface
 {
-    private $objetDistantRepository;
+    private ObjetDistantRepository $objetDistantRepository;
+    private ObjetDistantHelper $objetHelper;
+    private $pagination;
 
-     /**
-      * @param $objetDistantRepository
-      */
-     public function __construct(ObjetDistantRepository $objetDistantRepository)
+    /**
+     * @param ObjetDistantRepository $objetDistantRepository
+     * @param ObjetDistantHelper $objetHelper
+     */
+     public function __construct(ObjetDistantRepository $objetDistantRepository, ObjetDistantHelper $objetHelper,
+                                 Pagination             $pagination)
      {
+         $this->objetHelper = $objetHelper;
          $this->objetDistantRepository = $objetDistantRepository;
+         $this->pagination = $pagination;
      }
 
 
@@ -29,15 +38,21 @@ RestrictedDataProviderInterface
 
      public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable
      {
-        $ra = key_exists("ra", $context) ? intval($context[ObjetDistantFilter::RA_FILTER_CONTEXT]) : null;
-        $dec = key_exists('dec', $context) ? intval($context[ObjetDistantFilter::DEC_FILTER_CONTEXT]) : null;
-        $magnitude = key_exists('magnitude', $context) ? intval($context[ObjetDistantFilter::MAGNITUDE_FILTER_CONTEXT]) : null;
-        $constellations = key_exists('constellation', $context) ? $context[ObjetDistantFilter::CONSTELLATION_FILTER_CONTEXT] : null;
 
-        if(!empty($constellations) && is_array($constellations) && count($constellations) > 0){
-            return $this->objetDistantRepository->findByConstellations($constellations) ?? [];
+
+         $query = $this->objetDistantRepository->findByAttribut($context);
+
+        if(!empty($context["constelllation"]) && is_array($context["constellation"]) &&
+            count($context["constellation"]) > 0)
+        {
+            $query = $this->objetDistantRepository->findByConstellations($query, $context["constellation"]);
         }
 
-        return $this->objetDistantRepository->findFithFirst() ;
+
+         list($currentPage, $offset, $resultMax) = $this->pagination->getPagination($resourceClass, $operationName, $context);
+
+        $paginator = new ObjetDistantPaginator($this->objetHelper, $currentPage, $resultMax, $context);
+        return $paginator;
+        //return $this->objetDistantRepository->getResult($query);
      }
 }

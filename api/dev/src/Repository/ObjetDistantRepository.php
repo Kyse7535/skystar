@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Constellation;
 use App\Entity\ObjetDistant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+
 
 /**
  * @method ObjetDistant|null find($id, $lockMode = null, $lockVersion = null)
@@ -37,50 +39,41 @@ class ObjetDistantRepository extends ServiceEntityRepository
 
     }
 
-    public function findByAttribut($ra, $dec, $magnitude) : array
+    public function findByAttribut(array $context): QueryBuilder
     {
-        if (empty($ra) || empty($dec) || empty($magnitude))
+        if (empty($context['ra']) || empty($context["dec"]) || empty($context["magnitude"]))
         {
-            return array();
+            return $this->createQueryBuilder('p');
         }
-
         $qb = $this->createQueryBuilder('p')
-        ->where("p.ra >= :raMin")
-        ->andWhere("p.ra <= :raMax")
-        ->andWhere("p.deca >= :decMin")
-        ->andWhere("p.deca <= :decMax")
-        ->andWhere("p.magnitude >= :magnitudeMin")
-        ->andWhere("p.magnitude <= :magnitudeMax")
-        ->setParameter("raMin", $ra - 1)
-        ->setParameter("raMax", $ra + 1)
-        ->setParameter("decMin", $dec - 1)
-        ->setParameter("decMax", $dec + 1)
-        ->setParameter("magnitudeMin", $magnitude - 1)
-        ->setParameter("magnitudeMax", $magnitude + 1);
-        $query = $qb->getQuery();
+            ->andWhere("p.ra >= :raMin")
+            ->andWhere("p.ra <= :raMax")
+            ->andWhere("p.deca >= :decMin")
+            ->andWhere("p.deca <= :decMax")
+            ->andWhere("p.magnitude >= :magnitudeMin")
+            ->andWhere("p.magnitude <= :magnitudeMax")
+            ->setParameter("raMin", intval($context["ra"]) - intval($context["raRange"]) / 2)
+            ->setParameter("raMax", intval($context["ra"]) + intval($context["raRange"]) / 2)
+            ->setParameter("decMin", intval($context["dec"]) - intval($context["decaRange"]) / 2)
+            ->setParameter("decMax", intval($context["dec"]) + intval($context["decaRange"]) / 2)
+            ->setParameter("magnitudeMin", intval($context["magnitude"]) - 1)
+            ->setParameter("magnitudeMax", intval($context["magnitude"]) + 1);
 
-        return $query->execute();
+        return $qb;
+    }
+
+    public function findByConstellations(QueryBuilder $queryBuilder, array $constellations): QueryBuilder
+    {
+        $queryBuilder
+            ->leftJoin('o.idConstellation', 'idConstellation')
+            ->andWhere($queryBuilder->expr()->in('idConstellation', $constellations));
+        return $queryBuilder;
 
     }
 
-    public function findFithFirst()
-    {
-        $qb = $this->createQueryBuilder('p')
-            ->where('p.idObjetDistant <= :var')
-            ->setParameter('var', 5);
-        $query = $qb->getQuery();
-
+    public function getResult(QueryBuilder $queryBuilder) {
+        $query = $queryBuilder->getQuery();
         return $query->execute();
-    }
-
-    public function findByConstellations(array $constellations)
-    {
-        $qb = $this->createQueryBuilder('o')
-                ->leftJoin('o.idConstellation', 'idConstellation')
-                ->andWhere($queryBuilder->expr()->in('idConstellation', $constellations));      
-                $query = $qb->getQuery();
-
-                return $query->execute();
     }
 
 }

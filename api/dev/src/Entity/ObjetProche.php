@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use App\Filter\ObjetFilter;
+
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * ObjetProche
@@ -13,6 +18,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ORM\Table(name="objet_proche")
  * @ORM\Entity
  */
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']],
+    itemOperations: ['get'],
+    collectionOperations: ['get'],
+)]
+#[ApiFilter(ObjetFilter::class)]
 class ObjetProche
 {
     /**
@@ -23,6 +34,8 @@ class ObjetProche
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="objet_proche_id_objet_proche_seq", allocationSize=1, initialValue=1)
      */
+    #[Groups(['read:collection'])]
+    #[ApiProperty(identifier: true)]
     private $idObjetProche;
 
     /**
@@ -30,6 +43,7 @@ class ObjetProche
      *
      * @ORM\Column(name="nom", type="string", length=32, nullable=true, options={"fixed"=true})
      */
+    #[Groups(['read:collection'])]
     private $nom;
 
     /**
@@ -37,6 +51,7 @@ class ObjetProche
      *
      * @ORM\Column(name="magnitude", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $magnitude;
 
     /**
@@ -44,6 +59,7 @@ class ObjetProche
      *
      * @ORM\Column(name="ra", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $ra;
 
     /**
@@ -51,6 +67,7 @@ class ObjetProche
      *
      * @ORM\Column(name="deca", type="decimal", precision=10, scale=5, nullable=true)
      */
+    #[Groups(['read:collection'])]
     private $deca;
 
     /**
@@ -80,6 +97,7 @@ class ObjetProche
      *   }
      * )
      */
+    #[Groups(['read:collection'])]
     private $idConstellation;
 
     /**

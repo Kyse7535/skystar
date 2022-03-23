@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Filter\ObjetDistantFilter;
+use App\Filter\ObjetFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 
@@ -22,9 +22,8 @@ use ApiPlatform\Core\Annotation\ApiProperty;
     normalizationContext: [ 'groups' => ['read:collection', 'read:constellation']],
     itemOperations: ['get'],
     collectionOperations: ['get'],
-    paginationEnabled: false,
 )]
-#[ApiFilter(ObjetDistantFilter::class)]
+#[ApiFilter(ObjetFilter::class)]
 class ObjetDistant
 {
     /**

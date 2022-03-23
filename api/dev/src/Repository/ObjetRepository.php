@@ -1,42 +1,24 @@
 <?php
 
 namespace App\Repository;
-
 use App\Entity\Constellation;
-use App\Entity\ObjetProche;
+
+use App\Entity\ObjetDistant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-
 /**
- * @method ObjetProche|null find($id, $lockMode = null, $lockVersion = null)
- * @method ObjetProche|null findOneBy(array $criteria, array $orderBy = null)
- * @method ObjetProche[]    findAll()
- * @method ObjetProche[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ObjetDistant|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ObjetDistant|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ObjetDistant[]    findAll()
+ * @method ObjetDistant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ObjetProcheRepository extends ServiceEntityRepository
+class ObjetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ObjetProche::class);
-    }
-
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    public function findByObjetProche(int $const) : array
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT o
-            FROM App\Entity\ObjetProche o
-            WHERE o.idObjetProche =:idObjetProche')
-            ->setParameter('idObjetProche', $const);
-
-        return $query->getResult();
-
+        parent::__construct($registry, ObjetDistant::class);
     }
 
     public function findByAttribut(array $context): QueryBuilder
@@ -63,6 +45,7 @@ class ObjetProcheRepository extends ServiceEntityRepository
         return $qb;
     }
 
+
     public function findByConstellations(QueryBuilder $queryBuilder, array $constellations): QueryBuilder
     {
         $queryBuilder
@@ -76,5 +59,4 @@ class ObjetProcheRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
         return $query->execute();
     }
-
 }
