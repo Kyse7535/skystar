@@ -62,7 +62,19 @@ export class ResearchComponent implements OnInit {
   ngOnInit(): void {
     // Au lancement on récupère les constellations
     this.constellationService.getConstellations()
-      .subscribe(c => c ? this.constellations = c["hydra:member"]: null)
+      .subscribe(c => {
+        let constellations = c["hydra:member"] || []
+        constellations.sort(function (a, b) {
+          if (a.latinName < b.latinName) {
+            return -1;
+          }
+          if (a.latinName > b.latinName) {
+            return 1;
+          }
+          return 0;
+        })
+        this.constellations = constellations
+      })
 
     this.onChangeTypeObjet()
   }
