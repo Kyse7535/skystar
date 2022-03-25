@@ -116,6 +116,7 @@ class ObjetDistant
      *   }
      * )
      */
+    #[Groups(['read:collection'])]
     private $idConstellation;
 
     /**

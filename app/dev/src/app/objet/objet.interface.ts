@@ -1,3 +1,4 @@
+import { ConstellationApi } from "../constellation/contellation.interface";
 
 interface Objet {
   // "@id": string | undefined | null;
@@ -5,6 +6,7 @@ interface Objet {
   ra: number | string;
   deca: number | string;
   magnitude: number | string;
+  idConstellation: undefined | ConstellationApi[];
 }
 
 interface ObjetDistant extends Objet {

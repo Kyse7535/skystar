@@ -13,6 +13,7 @@ export class ObjetProche extends Objet implements ObjetProcheInterface {
   ra!: string | number;
   deca!: string | number;
   magnitude!: string | number;
+  idConstellation!: [];
 
     // Objet Position existe déjà dans PIXI.Graphics, alors on le nomme pos
     pos!: Position;

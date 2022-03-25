@@ -69,10 +69,10 @@ export class ResearchComponent implements OnInit {
 
   onChangeTypeObjet(): void {
     if(this.type_objet === 'proche') {
-      this.displayedColumns = ["idObjetProche", "ra", "deca", "magnitude", "nom", "type", "dateApprobation", "actions"];
+      this.displayedColumns = ["idObjetProche", "ra", "deca", "magnitude", "nom", "type", "dateApprobation", "idConstellation", "actions"];
     } 
     if(this.type_objet === 'distant') {
-      this.displayedColumns = ["idObjetDistant", "ra", "deca", "magnitude", "type", "raRadians", "decRadians", "created", "updated", "actions"]
+      this.displayedColumns = ["idObjetDistant", "ra", "deca", "magnitude", "type", "raRadians", "decRadians", "created", "updated", "idConstellation", "actions"]
     }
   }
 

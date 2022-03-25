@@ -14,6 +14,7 @@ export class ObjetDistant extends Objet implements ObjetDistantInterface {
   ra!: string | number;
   deca!: string | number;
   magnitude!: string | number;
+  idConstellation!: [];
 
   // Objet Position existe déjà dans PIXI.Graphics, alors on le nomme pos
   pos!: Position;
